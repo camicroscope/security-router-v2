@@ -13,32 +13,33 @@
 if (!isset($_REQUEST['doAction'])) {
 	header('Location:../index.php');
 }
-require_once '../config/security_config.php';
+//require_once '../config/security_config.php';
+$config = require '../config.php';
 require 'registration_info.php';
 require_once 'mailWrapper.php';
 session_start();
 
 function handleAdminActions()
 {
-	global $folder_path;
+	global $config;
 	error_log("processing ....... signUp ");
 	$email = $_POST["email"];
 	$name =  $_POST["name"];
 	$reason =  $_POST["reason"];
-	
+
 	if(isset($email)  && isset($name)) {
 		$verification_code = UserRegistrationInfo::createNewRequest($email, $name, $reason);
 		error_log("sending email .......");
 		$admins = getAdminList();
-		$subject = "$email requesting access to caMicroscope"; 
-		$accept_url = get_host_port_url() . $folder_path ."security/accept_deny_user_access.php?doAction=request-accepted&verification_code=$verification_code";
-		$deny_url = get_host_port_url() . $folder_path ."security/accept_deny_user_access.php?doAction=request-denied&verification_code=$verification_code";
+		$subject = "$email requesting access to caMicroscope";
+		$accept_url = get_host_port_url() . $config['folder_path'] ."security/accept_deny_user_access.php?doAction=request-accepted&verification_code=$verification_code";
+		$deny_url = get_host_port_url() . $config['folder_path'] ."security/accept_deny_user_access.php?doAction=request-denied&verification_code=$verification_code";
 		$content = "Following user is seeking access to caMicroscope\nName: $name\nEmail Address: $email\nReason: $reason\n\nApprove Request :\n$accept_url \n\nDeny Request :\n$deny_url";
 		foreach ($admins as $admin_email)
-		{			
+		{
 			sendMail($admin_email, $subject, $content);
 		}
-		$first_line = "Your request has been received"; 
+		$first_line = "Your request has been received";
 		$second_line = "You will recieve an email notification when your request is approved or denied.";
 		writeHeaderHTML();
 		display_message($first_line, $second_line);
@@ -52,22 +53,22 @@ function handleAdminActions()
 	}
 }
 
-   
+
 function handleUserRegistration() {
-	global $folder_path;
+	global $config;
 	if (isset($_SESSION["api_key"])) {
 		// user already has an api_key so no need to go through with registration just redirect to select.php
-		header("Location:http://".$_SERVER["HTTP_HOST"].$folder_path."select.php");
+		header("Location:http://".$_SERVER["HTTP_HOST"].$config['folder_path']."select.php");
 		die();
 	} else {
 		try {
-			// initialize 			
+			// initialize
 			UserRegistrationInfo::init();
-			
+
 			$email = $_SESSION["email"];
 			$name = $_SESSION["name"];
-			
-			
+
+
 			if("submitSignUp" === $_REQUEST["doAction"]) {
 				error_log("handle admin actions...");
 				handleAdminActions();
@@ -77,10 +78,10 @@ function handleUserRegistration() {
 					requestPending($email , $name);
 				} else {
 					error_log("user registration...");
-					userRegistration($email , $name); 
-				}	
+					userRegistration($email , $name);
+				}
 			}
-			
+
 		} catch(ErrorException $exception) {
 			handleError($exception -> getMessage(), TRUE);
 		}
@@ -150,7 +151,7 @@ function requestPending($email,$name) {
 }
 
 function writeHeaderHTML() {
-	global $folder_path;
+	global $config;
 	?>
  <!DOCTYPE html>
 <html>
@@ -179,28 +180,28 @@ function writeHeaderHTML() {
 		</head>
 	<title>caMicroscope </title>
 	<body style="padding-top: 10px;">
-		
+
 		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
   				<div class="navbar-header">
-    
-    			<a class="navbar-brand" href="<?php echo $folder_path ?>"><h1>caMicroscope</h1></a>
+
+    			<a class="navbar-brand" href="<?php echo $config['folder_path']; ?>"><h1>caMicroscope</h1></a>
   				</div>
-  				
+
   				<div class="nav navbar-nav navbar-right">
   					<a  class="navbar-brand" href="http://imaging.cci.emory.edu/wiki/display/CAMIC/Home"><h5>Help</h5></a>
   				</div>
-  				
-  				<ul class="nav navbar-nav navbar-right"> 
-  					
+
+  				<ul class="nav navbar-nav navbar-right">
+
   					<li  class="dropdown">
   							 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><h5><?php echo $_SESSION["name"]; ?></h5></a>
   							<ul class="dropdown-menu navbar-inverse">
               <li><a onclick="logOut(); return false;" href="#">Logout</a></li>
  						    </ul>
-  					</li> 
+  					</li>
   				</ul>
-  				
-  				
+
+
 		</nav>
 
 		<div class="row" body >

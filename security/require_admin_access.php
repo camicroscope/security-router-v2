@@ -1,10 +1,11 @@
 <?php
 //require 'authenticate.php';
-require_once '../config/security_config.php';
+//require_once '../config/security_config.php';
+$config = require '../config.php';
 
 if(isset($_SESSION["email"]) && isAdmin($_SESSION["email"]))
 {
-	global $folder_path;
+	global $config;
 	return;
 }
 else {
@@ -27,18 +28,18 @@ else {
 	</head>
 	<title>caMicroscope </title>
 	<body style="padding-top: 10px;">
-		
+
 		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
   				<div class="navbar-header">
-    
-    			<a class="navbar-brand" href="<?php echo $folder_path ?>"><h1>caMicroscope</h1></a>
+
+    			<a class="navbar-brand" href="<?php echo $config['folder_path']; ?>"><h1>caMicroscope</h1></a>
   				</div>
-  				
-  				
+
+
   				<div class="nav navbar-nav navbar-right">
   					<a  class="navbar-brand" href="http://imaging.cci.emory.edu/wiki/display/CAMIC/Home"><h5>Help</h5></a>
   				</div>
-  				
+
 		</nav>
 
 		<div class="row" body >
@@ -67,7 +68,7 @@ else {
 </html>
 
 	<?php
-	
+
 	die();
 }
 

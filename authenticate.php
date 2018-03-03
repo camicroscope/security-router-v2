@@ -1,18 +1,20 @@
 <?php
-require_once('config/security_config.php');
-//$enable_security = true;
-// start sessions
+$config = require 'config.php';
 
+// start sessions
 session_start();
-if(!$enable_security){
+
+// renew sessions between 30 and 60 min old
+require 'session_renewer.php';
+
+if($config['disable_security']){
 	 /* Disable authentication*/
-	 $_SESSION["api_key"] = "APIKEY312"; //Don't change this string, we do a find and replace to populate the actual api key here.
-	 $_SESSION["email"] = "viewer@quip"; //dummy user. 
+	 $_SESSION["api_key"] = $config['api_key'];
+	 $_SESSION["email"] = "viewer@quip"; //dummy user.
 } else {
 	if (!isset($_SESSION["api_key"])) {
 	    session_unset();
-	    header("Location:http://".$_SERVER["HTTP_HOST"].$folder_path."index.php");
-	    //echo "try to redirect";
+	    header("Location:http://".$_SERVER["HTTP_HOST"].$config['folder_path']."index.php");
 	}
 }
 
