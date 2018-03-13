@@ -24,6 +24,7 @@ $cnf=[
     'trusted_url' => param_get($config_file['trusted_url'] ,"http://quip-data:9099/trustedApplication"),
     'client_id' => param_get($config_file['client_id'] ,"xxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"),
     'client_secret' => param_get($config_file['client_secret'],"xxxxxxxxxxxxxxx"),
+    'redirect_uri' => param_get($config_file['redirect_uri'],"postmessage"),
     'title' => param_get($config_file['title'],"caMicroscope"),
     'suffix' => param_get($config_file['suffix'],"<div></div>"),
     'description' => param_get($config_file['description'],"Look at slides."),
