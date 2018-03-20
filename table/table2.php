@@ -133,21 +133,13 @@ var intersect3 =['17039922','17039789','17039920','17039897','17039875','1703987
 					} else if(registry == 'Hawaii'){
 						registry = 'R3'; 
 					}
-					data[i]['Registry'] = registry;
-					//console.log(data[i]['case_id']);				
-//					data[i]["Download curated features"] = "<a href='http://quip
-					//data[i]['TIL Maps'] = "False";
-					//data[i]['View Image'] =  "<a target='_blank' href='http://quip3.bmi.stonybrook.edu:8080/camicroscope/osdCamicroscope.php?tissueId="+ data[i]['case_id']+"'>Launch caMicroscope</a>";
+					data[i]['Registry'] = registry;					
 					data[i]['View Image'] =  "<a target='_blank' href='" + location.hostname+ ":8080/camicroscope/osdCamicroscope.php?tissueId="+ data[i]['case_id']+"'>"+ data[i]['Reformatted_DxSlide1_BarcodeID'] + "</a>"
-				
-					//data[i]['Link to Download Nuclear Curated Features'] = '<a href=\'/featurescapeapps/featurescape/?http://quip3.bmi.stonybrook.edu/quip-findapi?limit=1000&find={"randval":{"$gte":0},"provenance.analysis.source":"computer","provenance.analysis.execution_id":"wsi:r0.9:w0.8:l3:u200:k20:j1","provenance.image.case_id":"'+ data[i]['case_id']+ '"}&db=quip&c=default\'>Launch featurescape</a>';
-//					data[i]['Link to Download Nuclear Curated Features'] = "<a href='http://quip3.bmi.stonybrook.edu:8080/featurescapeapps/featurescape/u24Preview.php?case_id="+data[i]['case_id']+">View Features</a>";
 					data[i]['Link to Download Nuclear Curated Features'] = "<a target='_blank' href='" + location.hostname + ":8080/featurescapeapps/featurescape/u24Preview.php?case_id="+ data[i]['case_id']+"'>View Features</a>";
 					data[i]['Link to curated CSV'] = "<a href='" + location.hostname + ":8080/composite_results/"+data[i]['case_id']+".zip'>Download</a>";
 					delete data[i]['Images'];
 					delete data[i]['Original_DxSlide1_BarcodeID'];
 					delete data[i]['Reformatted_DxSlide1_BarcodeID'];
-//					delete data[i]['case_id'];
 					delete data[i]['DxSlide1_FileName'];
 
 					//console.log(intersect2);
