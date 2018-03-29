@@ -86,7 +86,7 @@ if ($config['disable_security']) {
 
     </div>
     <div class="footer">
-        <p><?php print $config['title']; ?></p>
+        <p><?php print $config['footer']; ?></p>
     </div>
 </div>
 
