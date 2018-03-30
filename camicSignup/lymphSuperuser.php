@@ -1,5 +1,5 @@
 <?php
-  require '../authenticate.php';
+  //require '../authenticate.php';
   $config = require '../config.php';
   ?>
 <!DOCTYPE html>

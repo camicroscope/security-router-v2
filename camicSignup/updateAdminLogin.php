@@ -1,6 +1,6 @@
 <?php
 
-  require '../authenticate.php';
+  //require '../authenticate.php';
   $base_config = require '../config.php';
 
   include_once('htpasswd.php');

@@ -1,6 +1,6 @@
 <?php
 
-  require '../authenticate.php';
+  //require '../authenticate.php';
   $config = require '../config.php';
 
   $command='sh list_user.sh';

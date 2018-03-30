@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../authenticate.php';
+//require '../authenticate.php';
 $base_config = require '../config.php';
 
 require_once '../config/security_config.php';
