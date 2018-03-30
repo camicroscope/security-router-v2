@@ -1,7 +1,7 @@
 <?php
 
   require '../authenticate.php';
-  $base_config = require 'config.php';
+  $base_config = require '../config.php';
 
   include_once("../camicroscope/api/Data/RestRequest.php");
   require_once 'HTTP/Request2.php';

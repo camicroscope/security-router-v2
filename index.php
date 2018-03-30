@@ -77,7 +77,7 @@ if ($config['disable_security']) {
         <h4>Login/Signup with:</h4>
             <span class="g-signin"
                   data-scope="email"
-                  data-clientid=<?php echo $config['client_id'] ?>
+                  data-clientid=<?php echo $config['client_id']; ?>
                   data-redirecturi="postmessage"
                   data-cookiepolicy="single_host_origin"
                   data-callback="logInCallback"
