@@ -32,9 +32,9 @@ if ($config['disable_security']) {
     <link rel="stylesheet" href="css/frontPage.css">
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="js/modernizr-2.8.3.min.js"></script>
     <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
-    <script src="js/vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="js/login.js"></script>
     <style type="text/css">
         body {
