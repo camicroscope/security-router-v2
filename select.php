@@ -264,7 +264,7 @@ $cSession = curl_init();
 
 					<h3>NCIP/Leidos 14X138</h3>
 
-					<p>caMicroscope Ð A Digital Pathology Integrative Query System;<br> Ashish Sharma PI, Emory/StonyBrook</p>
+					<p>caMicroscope ï¿½ A Digital Pathology Integrative Query System;<br> Ashish Sharma PI, Emory/StonyBrook</p>
 
 				</section>
 
@@ -292,7 +292,7 @@ $cSession = curl_init();
 
 	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 
-	<script src="assets/js/main.js"></script>
+	<!--script src="assets/js/main.js"></script-->
 
   <script src="js/check_session.js"></script>
 
@@ -303,4 +303,3 @@ $cSession = curl_init();
 
 
 </html>
-

@@ -91,7 +91,7 @@ if ($config['disable_security']) {
 </div>
 
 
-<script src="js/main.js"></script>
+<!--script src="js/main.js"></script-->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
