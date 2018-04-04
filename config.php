@@ -32,7 +32,7 @@ $cnf=[
     'download_link' => param_get($config_file['download_link'],"https://github.com/camicroscope"),
     'folder_path' => param_get($config_file['folder_path'],"/"),
     'dataHost'=> param_get($config_file['dataHost'],"quip-data:9099"),
-    'kueHost'=> param_get($config_file['kueHost'],"quip-jobs:3000"),
+    'kueHost'=> param_get($config_file['kueHost'],"quip-jobs:3000")
   ],
 ];
 
