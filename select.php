@@ -276,6 +276,18 @@ EOT;
 
             </section>
 
+            <section class="post">
+                <a href="upload.php" class="image"><img src="images/pic05.jpg" alt="" /></a>
+                <div class="content">
+                    <h3>Image Upload</h3>
+                    <p>Upload slide images to caMicroscope.</p>
+
+                    <a href="upload.php" class="button">More</a>
+
+                </div>
+
+            </section>
+
         </div>
 
 </section>
