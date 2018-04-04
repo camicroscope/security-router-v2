@@ -3,7 +3,6 @@ session_start();
 //require '../authenticate.php';
 $base_config = require '../config.php';
 
-require_once '../config/security_config.php';
 $_SESSION["name"] = "quip";
 ?>
 <!DOCTYPE html>
