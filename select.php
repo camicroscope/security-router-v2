@@ -76,9 +76,6 @@ if (empty($content)) {
 
 
 session_start();
-require 'authenticate.php';
-require 'branding.php';
-require_once 'config/security_config.php';
 
 $_SESSION["name"] = "quip";
 //try to fix bug
@@ -129,7 +126,7 @@ $_SESSION["userType"] = $userType;
 
     <!--title><?php print $config['title']; ?></title-->
 
-    <title><?php print $branding_title; ?></title>
+    <title><?php print $config['title']; ?></title>
     <meta charset="utf-8" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -171,7 +168,7 @@ $_SESSION["userType"] = $userType;
 
         <ul>
 
-            <li><a href="<?php print $download_link; ?>">About</a></li>
+            <li><a href="<?php print $config['download_link']; ?>">About</a></li>
 
             <li><a target="_blank" href="https://goo.gl/forms/3LXeLRD4bGERkqFy1">Feedback</a></li>
 
@@ -268,12 +265,12 @@ EOT;
             ?>
 
             <section class="post">
-                <a href="<?php print $download_link; ?>" class="image"><img src="images/code.jpg" alt="" /></a>
+                <a href="<?php print $config['download_link']; ?>" class="image"><img src="images/code.jpg" alt="" /></a>
                 <div class="content">
                     <h3>QuIP Distribution</h3>
                     <p>QuIP is free and open source. You can download and install this software, or report any issues you encounter.</p>
 
-                    <a href="<?php print $download_link; ?>" class="button">More</a>
+                    <a href="<?php print $config['download_link']; ?>" class="button">More</a>
 
                 </div>
 
