@@ -30,7 +30,9 @@ $cnf=[
     'description' => param_get($config_file['description'],"Look at slides."),
     'footer' => param_get($config_file['footer'],"caMicroscope – A Digital Pathology Integrative Query System; Ashish Sharma PI Emory"),
     'download_link' => param_get($config_file['download_link'],"https://github.com/camicroscope"),
-    'folder_path' => param_get($config_file['folder_path'],"/")
+    'folder_path' => param_get($config_file['folder_path'],"/"),
+    'UserDataUrl'=> param_get($config_file['UserDataUrl'],"http://quip-data:9099/services/u24_user/user_data/query/findUserByEmail"),
+    'DataLoaderUrl '=> param_get($config_file['DataLoaderUrl'],"http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/query/getAll")
   ],
 ];
 

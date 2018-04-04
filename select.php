@@ -18,7 +18,7 @@ $_SESSION["name"] = "quip";
 
 //try to fix bug
 
-$dataUrl="http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/query/getAll" ;
+$dataUrl=$config['DataLoaderUrl'];
 
 $apiKey = $_SESSION["api_key"];
 
@@ -79,7 +79,7 @@ session_start();
 
 $_SESSION["name"] = "quip";
 //try to fix bug
-$dataUrl="http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/query/getAll" ;
+$dataUrl=$config['DataLoaderUrl']; // why twice?
 $apiKey = $_SESSION["api_key"];
 $dataUrl = $dataUrl . "?api_key=".$apiKey;
 $content_json = array();
@@ -90,12 +90,12 @@ if(empty($content_json) or $content_json=='Error'){
 }
 
 $email=$_SESSION["email"];
-$dataUrl = "http://quip-data:9099/services/u24_user/user_data/query/findUserByEmail";
+$UdataUrl = $config['UserDataUrl'];
 $apiKey = $_SESSION["api_key"];
-$dataUrl = $dataUrl . "?api_key=".$apiKey;
-$dataUrl = $dataUrl . "&email=".$email;
+$UdataUrl = $UdataUrl . "?api_key=".$apiKey;
+$UdataUrl = $UdataUrl . "&email=".$email;
 $user_json = array();
-$user_json = fetchData($dataUrl);
+$user_json = fetchData($UdataUrl);
 if(!empty($user_json) and $user_json!='Error'){
     $item=$user_json[0];
     $a = (array)$item;
