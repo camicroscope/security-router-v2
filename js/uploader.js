@@ -68,7 +68,7 @@ $(document).ready(function() {
       url: "camicroscope/api/Data/osdMetadataRetriever.php?imageId=" +
         imageid,
       success: function(response) {
-        if (response.toString() === ",") {
+        if (JSON.parse(response.toString())[0] === null) {
           $('#uploadme').ajaxSubmit(options);
         } else {
           document.getElementById("status").innerHTML =
