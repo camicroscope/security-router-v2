@@ -1,4 +1,10 @@
 <?php
+$config = require 'config.php';
+if $config['disable_security']{
+  echo "Security disabled, but forceLogout called."
+  exit();
+}
+
 ?>
 
 <html>
