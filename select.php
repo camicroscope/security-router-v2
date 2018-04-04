@@ -66,9 +66,11 @@ if (empty($content)) {
 
     //die();
 
-    header('Location: forceLogout.php');
+    echo "<script>console.log('first content empty')</script>"
 
-    exit;
+    //header('Location: forceLogout.php');
+
+    //exit;
 
 }
 
@@ -85,8 +87,9 @@ $dataUrl = $dataUrl . "?api_key=".$apiKey;
 $content_json = array();
 $content_json = fetchData($dataUrl);
 if(empty($content_json) or $content_json=='Error'){
-    header('Location: forceLogout.php');
-    exit;
+    //header('Location: forceLogout.php');
+    //exit;
+    echo "<script>console.log('second content empty')</script>"
 }
 
 $email=$_SESSION["email"];
