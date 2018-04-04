@@ -90,7 +90,7 @@ if(empty($content_json) or $content_json=='Error'){
 }
 
 $email=$_SESSION["email"];
-$UdataUrl = "http://" . $config['dataHost']; . "/services/u24_user/user_data/query/findUserByEmail
+$UdataUrl = "http://" . $config['dataHost']; . "/services/u24_user/user_data/query/findUserByEmail";
 $apiKey = $_SESSION["api_key"];
 $UdataUrl = $UdataUrl . "?api_key=".$apiKey;
 $UdataUrl = $UdataUrl . "&email=".$email;
