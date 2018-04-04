@@ -18,7 +18,7 @@ $_SESSION["name"] = "quip";
 
 //try to fix bug
 
-$dataUrl=$config['DataLoaderUrl'];
+$dataUrl= "http://" . $config['dataHost']; . "/services/Camicroscope_DataLoader/DataLoader/query/getAll";
 
 $apiKey = $_SESSION["api_key"];
 
@@ -79,7 +79,7 @@ session_start();
 
 $_SESSION["name"] = "quip";
 //try to fix bug
-$dataUrl=$config['DataLoaderUrl']; // why twice?
+$dataUrl= "http://" . $config['dataHost']; . "/services/Camicroscope_DataLoader/DataLoader/query/getAll";
 $apiKey = $_SESSION["api_key"];
 $dataUrl = $dataUrl . "?api_key=".$apiKey;
 $content_json = array();
@@ -90,7 +90,7 @@ if(empty($content_json) or $content_json=='Error'){
 }
 
 $email=$_SESSION["email"];
-$UdataUrl = $config['UserDataUrl'];
+$UdataUrl = "http://" . $config['dataHost']; . "/services/u24_user/user_data/query/findUserByEmail
 $apiKey = $_SESSION["api_key"];
 $UdataUrl = $UdataUrl . "?api_key=".$apiKey;
 $UdataUrl = $UdataUrl . "&email=".$email;
