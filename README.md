@@ -30,8 +30,8 @@ Edit `config/security_config.php`:
 
 ### Disabling Authentication
 
-To disable authentication edit `config/security_config.php`:
+To disable authentication edit `config.ini`:
 
-* Set `$enable_security=false`
+* Set `disable_security=true`
 * You should be able to see the `/select.php` now when you launch the application from the browser.
 
