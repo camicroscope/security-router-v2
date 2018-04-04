@@ -37,6 +37,10 @@
         </div>
         <div id="status"></div>
         <br>
+        <p>After upload is completed...</p>
+        <button id="submitButton" class="btn-large blue waves-effect waves-light btn" onclick="javascript:history.back()">
+        Go Back <i class="material-icons right">arrow_back</i>
+        </buton>
     </div>
     </div>
     <script src="js/uploader.js"></script>
