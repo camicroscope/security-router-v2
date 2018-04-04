@@ -190,7 +190,7 @@ $_SESSION["userType"] = $userType;
 
         <header class="major">
 
-            <h2>Quantitative Imaging in Pathology</h2>
+            <h2><?php print $config['title']; ?></h2>
 
         </header>
 
@@ -294,19 +294,10 @@ EOT;
 
             <section class="about">
 
-                <h3>U24 CA18092401A1 </h3>
-
-                <p>Tools to Analyze Morphology and Spatially Mapped Molecular Data;<br> Saltz PI, StonyBrook/Emory/Oak Ridge/Yale</p>
+                <?php print $config['footer']; ?>
 
             </section>
 
-            <section class="about">
-
-                <h3>NCIP/Leidos 14X138</h3>
-
-                <p>caMicroscope, A Digital Pathology Integrative Query System;<br> Ashish Sharma PI, Emory/StonyBrook</p>
-
-            </section>
 
         </div>
 
