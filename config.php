@@ -10,7 +10,7 @@ catch(Exception $e){
 
 // API KEY is in api.key first, else may still be in the .ini
 try{
-  $api_key = file_get_contents("api.key");
+  $api_key = file_get_contents(__DIR__."/api.key");
 }
 catch(Exception $e){
 }
