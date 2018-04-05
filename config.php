@@ -21,7 +21,7 @@ catch(Exception $e){
 
 $cnf=[
   'config' => [
-    'api_key' => param_get($api_key,$config_file['api_key']),
+    'api_key' => param_get($config_file['api_key'], $api_key),
     'trusted_secret' => param_get($config_file['trusted_secret'],"9002eaf56-90a5-4257-8665-6341a5f77107"),
     'disable_security' => param_get($config_file['disable_security'],False),
     'mongo_client_url' => param_get($config_file['mongo_client_url'],"mongodb://quip-data"),
