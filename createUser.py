@@ -23,6 +23,7 @@ except ModuleNotFoundError:
   import configparser as ConfigParser
 
 bindaashost = "quip-data:9099"
+trusted_secret = "9002eaf56-90a5-4257-8665-6341a5f77107"
 try:
     ini_str = '[root]\n' + open('config.ini', 'r').read()
     ini_fp = StringIO.StringIO(ini_str)
@@ -30,16 +31,18 @@ try:
     config.readfp(ini_fp)
     if config.has_option('root', 'dataHost'):
         bindaashost = config.get('root','dataHost')
+    if config.has_option('root', 'trusted_secret'):
+        trusted_secret = config.get('root','trusted_secret')
 except BaseException as e:
   pass
 
 # create the user
-os.system("java -jar /var/www/html/camicSignup/trusted-app-client-0.0.1-jar-with-dependencies.jar -action a -username "+user+"  -id camicSignup -secret 9002eaf56-90a5-4257-8665-6341a5f77107 -comments loader -expires 01/01/2050  -url http://" + bindaashost + "/trustedApplication > userinfo")
+os.system("java -jar /var/www/html/camicSignup/trusted-app-client-0.0.1-jar-with-dependencies.jar -action a -username "+user+"  -id camicSignup -secret " + trusted_secret + " -comments loader -expires 01/01/2050  -url http://" + bindaashost + "/trustedApplication > userinfo")
 output = open('userinfo', 'r').read()
 
 if(output.find("already exist")):
         '''Does user exist? Get a short lived api key'''
-        cmd="java -jar /var/www/html/camicSignup/trusted-app-client-0.0.1-jar-with-dependencies.jar -action i -username "+user+"  -id camicSignup -secret 9002eaf56-90a5-4257-8665-6341a5f77107 -comments loader -lifetime 999999999  -url http://" + bindaashost + "/trustedApplication > userinfo2"
+        cmd="java -jar /var/www/html/camicSignup/trusted-app-client-0.0.1-jar-with-dependencies.jar -action i -username "+user+"  -id camicSignup -secret " + trusted_secret + " -comments loader -lifetime 999999999  -url http://" + bindaashost + "/trustedApplication > userinfo2"
         os.system(cmd)
         output = open('userinfo2', 'r').read()
         s = output.split("value")
