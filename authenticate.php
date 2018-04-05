@@ -9,7 +9,7 @@ require 'session_renewer.php';
 
 if($config['disable_security']){
 	 /* Disable authentication*/
-	 $_SESSION["api_key"] = $config['api_key'];
+	 $_SESSION["api_key"] = str_replace("%0A", "", urlencode($config['api_key']));
 	 $_SESSION["email"] = "viewer@quip"; //dummy user.
 } else {
 	if (!isset($_SESSION["api_key"])) {
