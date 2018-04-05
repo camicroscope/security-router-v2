@@ -8,15 +8,20 @@ try{
 catch(Exception $e){
 }
 
-// TODO fail if any of following missing from file
-$api_key;
+// API KEY is in api.key first, else may still be in the .ini
+try{
+  $api_key = file_get_contents("api.key");
+}
+catch(Exception $e){
+}
+
 
 //for others, null coalesce to defaults
 //TODO add a header to warn if security Disabled
 
 $cnf=[
   'config' => [
-    'api_key' => $config_file['api_key'],
+    'api_key' => param_get($api_key,$config_file['api_key']),
     'trusted_secret' => param_get($config_file['trusted_secret'],"9002eaf56-90a5-4257-8665-6341a5f77107"),
     'disable_security' => param_get($config_file['disable_security'],False),
     'mongo_client_url' => param_get($config_file['mongo_client_url'],"mongodb://quip-data"),
