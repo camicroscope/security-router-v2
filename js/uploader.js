@@ -26,7 +26,6 @@ $(document).ready(function() {
       document.getElementById("submitButton").disabled = false;
       //console.log(document.getElementById("imageid").innerHTML);
       console.log(response.status);
-      console.log("Call Tahsin...");
       document.getElementById("status").innerHTML =
         "Problem with uploading.";
       Materialize.toast('Problem with uploading.', 4000);
