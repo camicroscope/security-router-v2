@@ -20,12 +20,27 @@ If you do not wish to sign in users, please see [Disabling Authentication](https
 
 ### Step 2. Configuration
 
-Edit `config/security_config.php`:
+#Configuration
+Configuration is done through a headerless ini file, Config.ini
 
-* Set `$client_id` and `$client_secret` obtained from Step1.
-* Set `$bindaas_trusted_id` and `$bindaas_trusted_secret`.
-* Set `$bindaas_trusted_url` as the IP/hostname of the data container.
-* Set `$mongo_client_url` as IP/hostname of data container.  
+| Key | Function | Default |
+| --- | --- | --- | 
+|trusted_secret| bindaas trusted secret | - |
+|disable_security| a boolean which disables user login if true | false |
+|trusted_id | the application name for bindaas | camicSignup |
+|trusted_url | the bindaas endpoint for trust |http://quip-data:9099/trustedApplication |
+|client_id | client id from google oauth (Step 1) | an unusable value|
+|client_secret | client secret from google oauth (Step 1) | an unusable value|
+|redirect_uri | the redirection to take after oauth (Step 1) | postmessage|
+|title| the title as shown on the page title and some headers | caMicroscope|
+|suffix | a tagline printed after the title on the login page | empty |
+|description | a description of the application/deployment | Look at Slides |
+| footer | designed for grant or contact information | caMicroscope – A Digital Pathology Integrative Query System; Ashish Sharma PI Emory |
+|download_link | the url linked to on the download button | https://github.com/camicroscope |
+|folder_path| the relative path of the folder | \/ |
+| dataHost | the data container’s name and port | quip-data:9099 |
+|kueHost | the jobs container’s name and port | quip-jobs:3000 |
+ 
 
 
 ### Disabling Authentication
