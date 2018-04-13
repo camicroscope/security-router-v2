@@ -8,8 +8,6 @@ if (isset($_REQUEST['logIn'])) {
     $_SESSION['request_type'] = 'logIn';
 } else if (isset($_REQUEST['logOut'])) {
     $_SESSION['request_type'] = 'logOut';
-} else if (isset($_REQUEST['checkStatus'])) {
-    $_SESSION['request_type'] = 'checkStatus';
 } else {
     header('Location:../index.php');
     die();
@@ -102,15 +100,13 @@ if ('logIn' === $_SESSION['request_type']) {
         $_SESSION['access_token'] = $google_client->getAccessToken();
         error_log("token: ".$_SESSION['access_token']);
     }
-} elseif('checkStatus' === $_SESSION['request_type']){
-  echo "{\"issued\": \"" . $_SESSION["last_seen"] ."\", \"now\": \"" . time() . "\"}";
 }
 
 /************************************************
   If we have an access token, we can make
   requests, else we generate an error
  ************************************************/
-if (isset($_SESSION['access_token']) and not ('checkStatus' === $_SESSION['request_type'])) {
+if (isset($_SESSION['access_token'])) {
     $google_client->setAccessToken($_SESSION['access_token']);
     $PlusService = new Google_Service_Plus($google_client);
     $me = new Google_Service_Plus_Person();
