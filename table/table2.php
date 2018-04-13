@@ -134,9 +134,9 @@ var intersect3 =['17039922','17039789','17039920','17039897','17039875','1703987
 						registry = 'R3'; 
 					}
 					data[i]['Registry'] = registry;					
-					data[i]['View Image'] =  "<a target='_blank' href='" + location.hostname+ ":8080/camicroscope/osdCamicroscope.php?tissueId="+ data[i]['case_id']+"'>"+ data[i]['Reformatted_DxSlide1_BarcodeID'] + "</a>"
-					data[i]['Link to Download Nuclear Curated Features'] = "<a target='_blank' href='" + location.hostname + ":8080/featurescapeapps/featurescape/u24Preview.php?case_id="+ data[i]['case_id']+"'>View Features</a>";
-					data[i]['Link to curated CSV'] = "<a href='" + location.hostname + ":8080/composite_results/"+data[i]['case_id']+".zip'>Download</a>";
+					data[i]['View Image'] =  "<a target='_blank' href='../camicroscope/osdCamicroscope.php?db_name=quip_comp&tissueId="+ data[i]['case_id']+"'>"+ data[i]['Reformatted_DxSlide1_BarcodeID'] + "</a>"
+					data[i]['Link to Download Nuclear Curated Features'] = "<a target='_blank' href='../featurescapeapps/featurescape/u24Preview.php?db_name=quip_comp&case_id="+ data[i]['case_id']+"'>View Features</a>";
+					data[i]['Link to curated CSV'] = "<a href='../composite_results/"+data[i]['case_id']+".zip'>Download</a>";
 					delete data[i]['Images'];
 					delete data[i]['Original_DxSlide1_BarcodeID'];
 					delete data[i]['Reformatted_DxSlide1_BarcodeID'];
