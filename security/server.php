@@ -110,7 +110,7 @@ if ('logIn' === $_SESSION['request_type']) {
   If we have an access token, we can make
   requests, else we generate an error
  ************************************************/
-if (isset($_SESSION['access_token'])) {
+if (isset($_SESSION['access_token']) and not ('checkStatus' === $_SESSION['request_type'])) {
     $google_client->setAccessToken($_SESSION['access_token']);
     $PlusService = new Google_Service_Plus($google_client);
     $me = new Google_Service_Plus_Person();
