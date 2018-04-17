@@ -1,7 +1,7 @@
 <?php
 require_once 'trusted_app_client.php';
-require_once '../config/security_config.php';
-
+//require_once '../config/security_config.php';
+$config = require '../config.php';
 class UserRegistrationInfo {
 
 	public static $db;
@@ -9,19 +9,19 @@ class UserRegistrationInfo {
 	public static $requests;
 	public static $historyLog;
 	public static $client;
- 
+
 	public static function init() {
-		global $mongo_client_url;
-		$m = new MongoClient($mongo_client_url);
+		global $config;
+		$m = new MongoClient($config['mongo_client_url']);
 		// connect
 		self::$requests = $m -> camicWebapp -> requests;
 		self::$historyLog = $m -> camicWebapp -> historyLog;
-		
+
 		self::$client = new TrustedApplicationClient();
 		self::$client->initialize("demo-id","demo-secret-key" , "http://imaging.cci.emory.edu:9099/trustedApplication");
 		// initialize
 		self::$initialized = TRUE;
-		
+
 		error_log("MongoDB initialized");
 	}
 
@@ -49,7 +49,7 @@ class UserRegistrationInfo {
 		try {
 
 			$request =  self::$requests -> findOne(array("verification_code" => $verificationCode));
-			
+
 			if (isset($request)) {
 				// generate api_key
 				$serverMessage = self::generate_api_key($request);

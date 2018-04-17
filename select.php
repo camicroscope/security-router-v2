@@ -1,208 +1,351 @@
 <?php
+
 session_start();
+
 require 'authenticate.php';
 
-require_once 'config/security_config.php';
+//require 'branding.php';
+
+//require_once 'config/security_config.php';
+
+$config = require 'config.php';
+
+
+
 $_SESSION["name"] = "quip";
 
+
+
 //try to fix bug
-$dataUrl="http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/query/getAll" ;
+
+$dataUrl= "http://" . $config['dataHost'] . "/services/Camicroscope_DataLoader/DataLoader/query/getAll";
+
+$apiKey = $_SESSION["api_key"];
+
+$dataUrl = $dataUrl . "?api_key=".$apiKey;
+
+$cSession = curl_init();
+
+function fetchData($dataUrl){
+    $cSession = curl_init();
+    try {
+        $ch = curl_init();
+
+        if (FALSE === $ch)
+
+            throw new Exception('failed to initialize');
+
+        curl_setopt($ch,CURLOPT_URL, $dataUrl);
+
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+
+        curl_setopt($ch,CURLOPT_HEADER, false);
+
+
+
+        $content = curl_exec($ch);
+
+        if (FALSE === $content)
+            throw new Exception(curl_error($ch), curl_errno($ch));
+
+        // ...process $content now
+    } catch(Exception $e) {
+        $content = "Error";
+        return $content;
+    }
+    $content_json = json_decode($content);
+    return $content_json;
+}
+
+
+if (empty($content)) {
+
+    // list is empty.
+
+    //session_unset();
+
+    //die();
+
+    echo "<script>console.log('first content empty')</script>";
+
+    //header('Location: forceLogout.php');
+
+    //exit;
+
+}
+
+//end of bug fix
+
+
+session_start();
+
+$_SESSION["name"] = "quip";
+//try to fix bug
+$dataUrl= "http://" . $config['dataHost'] . "/services/Camicroscope_DataLoader/DataLoader/query/getAll";
 $apiKey = $_SESSION["api_key"];
 $dataUrl = $dataUrl . "?api_key=".$apiKey;
-$cSession = curl_init();
- try {
-          $ch = curl_init();
+$content_json = array();
+$content_json = fetchData($dataUrl);
+if(empty($content_json) or $content_json=='Error'){
+    //header('Location: forceLogout.php');
+    //exit;
+    echo "<script>console.log('second content empty')</script>";
+}
 
-          if (FALSE === $ch)
-              throw new Exception('failed to initialize');
+$email=$_SESSION["email"];
+$UdataUrl = "http://" . $config['dataHost'] . "/services/u24_user/user_data/query/findUserByEmail";
+$apiKey = $_SESSION["api_key"];
+$UdataUrl = $UdataUrl . "?api_key=".$apiKey;
+$UdataUrl = $UdataUrl . "&email=".$email;
+$user_json = array();
+$user_json = fetchData($UdataUrl);
+if(!empty($user_json) and $user_json!='Error'){
+    $item=$user_json[0];
+    $a = (array)$item;
+    $userType=$a['userType'];
+}else
+    $userType="user";
 
-          curl_setopt($ch,CURLOPT_URL, $dataUrl);
-          curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-          curl_setopt($ch,CURLOPT_HEADER, false);
-
-          $content = curl_exec($ch);
-
-          if (FALSE === $content)
-              throw new Exception(curl_error($ch), curl_errno($ch));
-
-          // ...process $content now
-     } catch(Exception $e) {
-          $content = "Error";         
-         }
-
-    if (empty($content)) {
-             // list is empty.
-             //session_unset();
-             //die();
-      header('Location: forceLogout.php');
-      exit;
-     }
-  //end of bug fix 
-
+$_SESSION["userType"] = $userType;
 ?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Import Google Icon Font-->
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
-    <!--<link rel="stylesheet" href="css/style.css">-->
-    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
-    <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+<!DOCTYPE HTML>
+
+<!--
+
+	Archetype by Pixelarity
+
+	pixelarity.com | hello@pixelarity.com
+
+	License: pixelarity.com/license
+
+-->
+
+<html>
+
+
+
+<head>
+
+    <!--title><?php print $config['title']; ?></title-->
+
+    <title><?php print $config['title']; ?></title>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+
     <script>
+
         function logOut() {
+
             $.post("security/server.php?logOut", {},
-                    function () {
-                        window.location = "index.php";
-                    });
+                function () {
+                    window.location = "index.php";
+                });
             gapi.auth.signOut();
         }
+
     </script>
-  </head>
 
-  <body>
-    <!--Import jQuery before materialize.js-->
+</head>
 
 
-    <div class="navbar-fixed">
-      <nav class="blue darken-3">
-        <div class="nav-wrapper">
-          <a href="#!" class="brand-logo">
-            <i class="microscope">
-              <img src="svg/camic_vector.svg" id="svg1" width="100%" height="100%" viewBox="0 0 640 480" preserveAspectRatio="xMaxYMax"/>
-            </i>
-            caMicroscope
 
-          </a>
-          <a class="btn-floating btn-large halfway-fab waves-effect waves-light green darken-2" href="#modal1">
-            <i class="material-icons">file_upload</i>
-          </a>
-          <ul class="right hide-on-med-and-down"><!--
-            <li><a href="#upload">Upload</a></li>
-            <li><a href="#view">View</a></li>
-            <li><a href="#understand">Understand</a></li>
-            <li><a href="#distribute">Distribute</a></li>
-            -->
-              
-              <li><a href="#modal1">Upload</a></li>
-              <li><a href="FlexTables/index.php">View</a></li>
-              <li><a href="featurescapeapps/featurescape/u24Preview.php">Understand</a></li>
-              <li><a href="https://github.com/SBU-BMI/quip_distro">Distribute</a></li>
-              <li><a onclick="logOut(); return false;" href="#" data-toggle="tooltip" data-placement="bottom" title="<?php echo $_SESSION["email"]; ?>">Logout</a></li>
+<body>
 
-          </ul>
+
+
+<!-- Header -->
+
+<header id="header">
+
+    <nav id="nav">
+
+        <ul>
+
+            <li><a href="<?php print $config['download_link']; ?>">About</a></li>
+
+            <li><a target="_blank" href="https://goo.gl/forms/3LXeLRD4bGERkqFy1">Feedback</a></li>
+
+            <li><a href="#" onclick="logOut()">Logout</a></li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+
+
+<!-- Main -->
+
+<section id="main" class="wrapper">
+
+    <div class="inner">
+
+        <header class="major">
+
+            <h2><?php print $config['title']; ?></h2>
+
+        </header>
+
+        <!-- Content -->
+
+        <div class="content">
+
+            <a href="#" class="image fit"><img src="images/banner1.jpg" alt="" /></a>
+
         </div>
-      </nav>
+
+        <div class="posts">
+
+            <section class="post">
+                <!-- a href="FlexTables/index.php" class="image"><img src="images/camic.jpg" alt="" /></a -->
+                <a href="table/table2.php" class="image"><img src="images/camic.jpg" alt=""/></a>
+                <div class="content">
+                    <!--h3>caMicroscope</h3-->
+                    <h3>VTR Pilot</h3>
+                    <!--
+                                      <p>Visualize digitized pathology images, pathomic features, and annotate whole slide tissue images.</p>
+                                      <a href="FlexTables/index.php" class="button">More</a>
+                    -->
+                    <p>Use caMicroscope to view curated images and features from the various registries</p>
+                    <a href="table/table2.php" class="button">More</a>
+                </div>
+            </section>
+
+            <section class="post">
+                <a href="featurescapeapps/featurescape/u24Preview.php" class="image"><img src="images/fscape.jpg" alt="" /></a>
+                <div class="content">
+                    <h3>FeatureScape</h3>
+                    <p>Visual analytics platform for exploring pathomic features generated by analysis of whole slide tissue images to QuIP.</p>
+                    <a href="featurescapeapps/featurescape/u24Preview.php" class="button">More</a>
+                </div>
+            </section>
+
+            <section class="post">
+                <a href="FlexTables/index.php" class="image"><img src="images/camic.jpg" alt="" style="filter: grayscale(100%);"/></a>
+                <div class="content">
+                    <h3>Feature Curation App</h3>
+                    <p>For feature curation only</p>
+                    <a href="FlexTables/index.php" class="button">More</a>
+                </div>
+            </section>
+
+            <section class="post">
+                <a href="table/table.php" class="image"><img src="images/camic.jpg" alt="" style="filter: grayscale(100%);"/></a>
+                <div class="content">
+                    <h3>caMicroscope QC</h3>
+                    <p>Use caMicroscope to view features that have been extracted but not fully curated</p>
+                    <a href="table/table.php" class="button">More</a>
+                </div>
+            </section>
+
+            <?php
+            $userType=$_SESSION["userType"];
+            $template = <<<EOT
+<section class="post">
+          <a href="superuser/index.php" class="image"><img src="images/camic.jpg" alt="" style="filter: grayscale(100%);"/></a>
+          <div class="content">
+                  <h3>Super User Control Images</h3>
+                  <p>caMicroscope Super user set up images access control.</p>
+                  <a href="superuser/index.php" class="button">More</a>
+          </div>
+        </section>
+EOT;
+
+            if($userType=="superuser"){
+                echo $template;
+            }
+            ?>
+
+            <section class="post">
+                <a href="<?php print $config['download_link']; ?>" class="image"><img src="images/code.jpg" alt="" /></a>
+                <div class="content">
+                    <h3>QuIP Distribution</h3>
+                    <p>QuIP is free and open source. You can download and install this software, or report any issues you encounter.</p>
+
+                    <a href="<?php print $config['download_link']; ?>" class="button">More</a>
+
+                </div>
+
+            </section>
+
+            <section class="post">
+                <a href="upload.php" class="image"><img src="images/pic05.jpg" alt="" /></a>
+                <div class="content">
+                    <h3>Image Upload</h3>
+                    <p>Upload slide images to caMicroscope.</p>
+
+                    <a href="upload.php" class="button">More</a>
+
+                </div>
+
+            </section>
+
+        </div>
+
+</section>
+
+
+
+<!-- Footer -->
+
+<footer id="footer">
+
+    <div class="content">
+
+        <div class="inner">
+
+
+
+            <section class="about">
+
+                <?php print $config['footer']; ?>
+
+            </section>
+
+
+        </div>
+
     </div>
 
-    <div id="modal1" class="modal modal-fixed-footer">
-      <div class="modal-content">
-        <div class="container">
-          <h4> Upload Images </h4>
-          <p>Pick an unique Image ID (Letters, Numbers, Dash(-), and Underscore(_) only) and upload an image file.
-          <form id="uploadme" role="form" action="quip-loader/submitData" method="post" enctype="multipart/form-data">
-            <div class="input-field col s12">
-              <input id="imageid" name="case_id" type="text" pattern="^[a-zA-Z0-9-_]+$" class="validate">
-              <label for="imageid">Image ID</label>
-            </div>
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>File</span>
-                <input id="upload_image" name="upload_image" type="file">
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text">
-              </div>
-            </div>
-            <button id="submitButton" type="submit" value="Upload Image" class="btn-large blue waves-effect waves-light btn" action="submit">
-            Upload <i class="material-icons right">send</i>
-            </button>
-          </form>
-          <div class="progress">
-            <div id="progressbar" class="determinate" style="width: 0%"></div>
-          </div>
-          <div id="status"></div>
-          <br>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
-      </div>
-    </div>
+</footer>
 
-    <div class="row">
-      <div class="col s12 l4">
-        <div class="card" id="upload">
-          <div class="card-image">
-            <div class="darkimg">
-              <img src="img/upload.jpg">
-            </div>
-            <span class="card-title">Upload</span>
-            <a href="#modal1" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">file_upload</i></a>
-          </div>
-          <div class="card-content">
-            <p><b>Image Uploader</b>: Upload images here for collaboration, annotation and analysis. </p>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 l4">
-        <div class="card" id="view">
-          <div class="card-image">
-            <div class="darkimg">
-              <img src="img/view.jpg">
-            </div>
-            <span class="card-title">View</span>
-            <a href="FlexTables/index.php" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">pageview</i></a>
-          </div>
-          <div class="card-content">
-            <p><b>caMicroscope</b>: View and annotate whole slide tissue images and nuclear segmentations.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 l4">
-        <div class="card" id="understand">
-          <div class="card-image">
-            <div class="darkimg">
-              <img src="img/understand.jpg">
-            </div>
-            <span class="card-title">Understand</span>
-            <a href="featurescapeapps/featurescape/u24Preview.php" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">open_in_browser</i></a>
-          </div>
-          <div class="card-content">
-            <p><b>FeatureScape</b>: A visual analytics platform for exploring slide-level imaging features generated by analysis of whole slide tissue images to QuIP.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 l4">
-        <div class="card" id="distribute">
-          <div class="card-image">
-            <div class="darkimg">
-              <img src="img/dist.jpg">
-            </div>
-            <span class="card-title">Distribute</span>
-            <a href="https://github.com/SBU-BMI/quip_distro" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">code</i></a>
-          </div>
-          <div class="card-content">
-            <p><b>QuIP distribution and installation</b>: Report issues on QuIP or Install/Distribute this software.</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="page-footer blue darken-4">
-      <p style="color:white;">U24 CA18092401A1, <b>Tools to Analyze Morphology and Spatially Mapped Molecular Data</b>; <i>Joel Saltz
-        PI</i> Stony Brook/Emory/Oak Ridge/Yale<br>NCIP/Leidos 14X138, <b>caMicroscope &ndash; A Digital Pathology
-        Integrative Query System</b>; <i>Ashish Sharma PI</i> Emory/WUSTL/Stony Brook<br />
-      </p>
-    </div>
-    <script src="js/uploader.js"></script>
-  </body>
+
+
+
+<!-- Scripts -->
+
+<script src="assets/js/jquery.min.js"></script>
+
+<script src="assets/js/jquery.dropotron.min.js"></script>
+
+<script src="assets/js/jquery.scrollex.min.js"></script>
+
+<script src="assets/js/skel.min.js"></script>
+
+<script src="assets/js/util.js"></script>
+
+<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+
+<!--script src="assets/js/main.js"></script-->
+
+<script src="js/check_session.js"></script>
+
+
+
+</body>
+
+
+
 </html>

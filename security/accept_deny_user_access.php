@@ -8,8 +8,8 @@ if(!isset($_REQUEST['doAction'])) {
 }
 require 'registration_info.php';
 require_once 'mailWrapper.php';
-require_once '../config/security_config.php';
-
+//require_once '../config/security_config.php';
+$config = require '../config.php';
 
 
 function handleAdminActions()
@@ -20,11 +20,11 @@ function handleAdminActions()
 		error_log("processing ....... request-accepted ");
 		if(isset($_REQUEST["verification_code"]))
 		{
-			$verification_code = $_REQUEST["verification_code"];	
+			$verification_code = $_REQUEST["verification_code"];
 			$request = UserRegistrationInfo::allowUserAccess($verification_code);
 
 			if(isset($request) && $request )
-			{	
+			{
 				writeHeaderHTML();
 				$first_line = $request["email"] .  " has been granted access to caMicroscope";
 				$second_line = "";
@@ -54,7 +54,7 @@ function handleAdminActions()
 		if(isset($_REQUEST["verification_code"]))
 		{
 			error_log("processing ....... request-accepted ");
-			$verification_code = $_REQUEST["verification_code"];		
+			$verification_code = $_REQUEST["verification_code"];
 			$request = UserRegistrationInfo::denyUserAccess($verification_code);
 			if(isset($request) && $request )
 			{
@@ -64,7 +64,7 @@ function handleAdminActions()
 				display_message($first_line, $second_line);
 				writeFooterHTML();
 				doSendMail( $request["name"], $request["email"] ,  $_REQUEST["doAction"]);
-				die();   
+				die();
 			}
 			else {
 				writeHeaderHTML();
@@ -93,11 +93,11 @@ function handleRequest() {
 
 	if(!isset($_REQUEST["doAction"]))
 	{
-		$_REQUEST["doAction"] = "unknown";	
+		$_REQUEST["doAction"] = "unknown";
 	}
 
-	// initialize 	
-	try {		
+	// initialize
+	try {
 		UserRegistrationInfo::init();
 		handleAdminActions();
 	}
@@ -119,14 +119,14 @@ function display_message($first_line , $second_line)
 
 function doSendMail( $name , $email , $action)
 {
-	global $folder_path;
+	global $config['folder_path'];
 	if(strcmp($action , "request-accepted") == 0)
 	{
-		// send mail to user 	
+		// send mail to user
 
 		$subject = "Your request for access to caMicroscope has been accepted";
-		$url = get_host_port_url() . $folder_path . "select.php";
-		$content = "Congratulations $name !!\nYour request for access to caMicroscope has been accepted\n\nPlease visit: \n\n " . "http://imaging.cci.emory.edu" . $folder_path . "?logout";
+		$url = get_host_port_url() . $config['folder_path'] . "select.php";
+		$content = "Congratulations $name !!\nYour request for access to caMicroscope has been accepted\n\nPlease visit: \n\n " . "http://imaging.cci.emory.edu" . $config['folder_path'] . "?logout";
 		error_log("sending email .......");
 		sendMail($email, $subject, $content);
 

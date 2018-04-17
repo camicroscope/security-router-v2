@@ -1,7 +1,8 @@
 <?php
 require_once('trusted_app_client.php');
 require_once('google-api-php-client/src/Google/autoload.php');
-require_once('../config/security_config.php');
+//require_once('../config/security_config.php');
+$config = require '../config.php';
 session_start();
 if (isset($_REQUEST['logIn'])) {
     $_SESSION['request_type'] = 'logIn';
@@ -22,11 +23,9 @@ function handleError($message, $die) {
 }
 
 function create_new_session($email, $name) {
-    global $bindaas_trusted_id;
-    global $bindaas_trusted_secret;
-    global $bindaas_trusted_url;
+    global $config;
     $client = new TrustedApplicationClient();
-    $client->initialize($bindaas_trusted_id, $bindaas_trusted_secret, $bindaas_trusted_url);
+    $client->initialize($config['trusted_id'], $config['trusted_secret'], $config['trusted_url']);
     $_SESSION["email"] = $email;
     $_SESSION["username"] = $email;
     $_SESSION["name"] = $name;
@@ -56,6 +55,7 @@ function create_new_session($email, $name) {
     die();
 }
 
+
 function get_api_key($email, $client) {
     try{
         $serverResponse = $client -> requestShortLivedKey($email);
@@ -63,9 +63,9 @@ function get_api_key($email, $client) {
         $apiKey = $serverResponse["api_key"];
         return $apiKey;
     }catch(Exception $e) {
-        error_log("Unable to retrieve api_key for $email : " .$e->getMessage());	
+        error_log("Unable to retrieve api_key for $email : " .$e->getMessage());
         return NULL;
-    }	
+    }
 }
 
 if ('logOut' === $_SESSION['request_type']) {
@@ -79,9 +79,9 @@ if ('logOut' === $_SESSION['request_type']) {
 }
 
 $google_client = new Google_Client();
-$google_client->setClientId($client_id);
-$google_client->setClientSecret($client_secret);
-$google_client->setRedirectUri($redirect_uri);
+$google_client->setClientId($config['client_id']);
+$google_client->setClientSecret($config['client_secret']);
+$google_client->setRedirectUri($config['redirect_uri']);
 $google_client->addScope('email');
 
 /************************************************

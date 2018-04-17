@@ -1,120 +1,97 @@
 <?php
-session_start();
-require_once('config/security_config.php');
-
-if (!$enable_security) {
-    header("Location:http://".$_SERVER["HTTP_HOST"].$folder_path."select.php");
+$config = require 'config.php';
+if ($config['disable_security']) {
+    header("Location:http://".$_SERVER["HTTP_HOST"].$config['folder_path']."select.php");
 } else {
-	if(isset($_SESSION["api_key"])){
-	        header("Location:http://".$_SERVER["HTTP_HOST"].$folder_path."select.php");
-	}
+    if(isset($_SESSION["api_key"])){
+        header("Location:http://".$_SERVER["HTTP_HOST"].$config['folder_path']."select.php");
+    }
 }
-
-
+//require_once('config/security_config.php');
+//require 'branding.php';
 ?>
 <!doctype html>
 <!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="">
-  <![endif]-->
-  <!--[if IE 7]>
-  <html class="no-js lt-ie9 lt-ie8" lang="">
-    <![endif]-->
-    <!--[if IE 8]>
-    <html class="no-js lt-ie9" lang="">
-      <![endif]-->
-      <!--[if gt IE 8]><!-->
-      <html class="no-js" lang="">
-        <!--<![endif]-->
-        <head>
-          <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-          <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-          <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-          <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
-          <!--Import Google Icon Font-->
-          <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-          <!--Import materialize.css-->
-          <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
-          <link type="text/css" rel="stylesheet" href="css/style.css">
-          <!--Let browser know website is optimized for mobile-->
-          <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-          <script>
-            function logInCallback(authResult) {
-                console.log("calling log in");
-                if (authResult['code']) {
-                    // Send the code to the server
-                    $.post("security/server.php?logIn", {code: authResult['code']},
-                            function (response) {
-                                console.log(response);
-                                if ('logIn' == response) {
-                                    window.location = 'select.php';
-                                } else if ('signUp' == response) {
-                                    window.location = 'security/request.php?doAction=signUp';
-                                }
-                            }
-                    );
-                } else if (authResult['error']) {
-                    // There was an error.
-                    // Possible error codes:
-                    //   "access_denied" - User denied access to your app
-                    //   "immediate_failed" - Could not automatially log in the user
-                    console.log('There was an error: ' + authResult['error']);
-                }
-            }
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title><?php print $config['title']; ?> Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-          </script>
-        </head>
-        <body>
-          <div class="navbar-fixed">
-            <nav class="blue darken-3">
-              <div class="nav-wrapper">
-                <a href="#!" class="brand-logo">
-                <i class="microscope">
-                <img src="svg/camic_vector.svg" id="svg1" width="100%" height="100%" viewBox="0 0 640 480" preserveAspectRatio="xMaxYMax"/>
-                </i>caMicroscope</a>
-                <a class="btn-floating btn-large halfway-fab waves-effect waves-light green darken-2" onclick="$('#___signin_0').children()[0].click();">
-                <i class="material-icons">perm_identity</i>
-                </a>
-              </div>
-            </nav>
-          </div>
-          <div class="container">
-          <div class="row">
-          <div class="col s12">
-            <div class="card" id="view">
-              <div class="card-image">
-                <div class="darkimg">
-                  <img src="img/view.jpg">
-                </div>
-                <span class="card-title">caMicroscope</span>
-              </div>
-              <div class="card-content">
-                <p><b>caMicroscope</b>: A digital pathology data management, visualization and analysis platform. It consists of a set
-                  of web services to manage pathology images, associated clinical and imaging metadata, and human/machine
-                  generated annotations and markups.
-                </p>
-                <br/>
-                <b>Log in:</b><br/>
-                <span class="g-signin"
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/frontPage.css">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/modernizr-2.8.3.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="js/login.js"></script>
+    <style type="text/css">
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+   <div class="container">
+   <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+         <div>
+            <div class="header">
+               <ul class="nav nav-pills pull-right">
+                  <li class="active">
+                     <a href="#">Home</a>
+                  </li>
+                  <li>
+                     <a href="<?php print $config['download_link']; ?>">Downloads</a>
+                  </li>
+               </ul>
+               <h3 class="text-muted"><br></h3>
+            </div>
+         </div>
+      </div>
+   </div>
+
+    <div class="jumbotron">
+        <h1><?php print $config['title']; ?></h1>
+        <?php print $config['suffix']; ?>
+
+        <p class="lead"><?php print $config['description']; ?></p>
+
+        <h4>Login/Signup with:</h4>
+            <span class="g-signin"
                   data-scope="email"
-                  data-clientid=<?php echo $client_id ?>
+                  data-clientid=<?php echo $config['client_id']; ?>
                   data-redirecturi="postmessage"
                   data-cookiepolicy="single_host_origin"
                   data-callback="logInCallback"
                   data-approvalprompt="force">
-                </span>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
-          <div class="page-footer blue darken-4">
-            <p style="color:white;">U24 CA18092401A1, <b>Tools to Analyze Morphology and Spatially Mapped Molecular Data</b>; <i>Joel Saltz
-              PI</i> Stony Brook/Emory/Oak Ridge/Yale<br>NCIP/Leidos 14X138, <b>caMicroscope &ndash; A Digital Pathology
-              Integrative Query System</b>; <i>Ashish Sharma PI</i> Emory/WUSTL/Stony Brook<br />
-            </p>
-          </div>
+            </span>
 
-<script src="js/main.js"></script>
+    </div>
+    <div class="footer">
+        <p><?php print $config['footer']; ?></p>
+    </div>
+</div>
+
+
+<!--script src="js/main.js"></script-->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
@@ -130,7 +107,7 @@ if (!$enable_security) {
         e.src = '//www.google-analytics.com/analytics.js';
         r.parentNode.insertBefore(e, r)
     }(window, document, 'script', 'ga'));
-    ga('create', 'UA-46271588-1', 'auto');
+    ga('create', 'UA-XXXXX-X', 'auto');
     ga('send', 'pageview');
 </script>
 </body>

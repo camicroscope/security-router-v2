@@ -1,54 +1,70 @@
+<?php
+$base_config = require '../config.php';
+?>
 <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-    <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-        <title>caMicroscope Admin Page</title> 
-        <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/camicroscope/css/annotools.css">
-        <link rel="stylesheet" href="/css/quipApps.css">	
-    </head>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <body>
-    
-     <div class="annotools">
-            <a href="/select.php" title="Home">
-                <img src="/camicroscope/images/ic_home_white_24px.svg" class="toolButton firstToolButtonSpace" alt="home">
-            </a>
-            <img src="/camicroscope/images/spacer.svg" class="spacerButton">
-            <a title="caMicroscope" href="/FlexTables/index.php" class="toolLink">caMicroscope</a>            
-            <img src="/camicroscope/images/spacer.svg" class="spacerButton">
-            
-            <a title="caMicroscope" href="/camicSignup/adminUpdate.html" class="toolLink">Admin Credential Update</a>
-            <img src="/camicroscope/images/spacer.svg" class="spacerButton">
-            
-             <a title="caMicroscope" href="/camicSignup/user_list.php" class="toolLink">User List</a>
-             <img src="/camicroscope/images/spacer.svg" class="spacerButton">
-            
-            <a title="caMicroscope" href="/camicSignup/index.html" class="toolLink">camicSignup</a>
-            <img src="/camicroscope/images/spacer.svg" class="spacerButton">
-            
-            <p class="titleButton">caMicroscope Admin Credential Update</p>
+    <!--Import Google Icon Font-->
+    <link href="../css/icons.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"  media="screen,projection"/>
+    <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>[*]<?php print $base_config['title']; ?></title>
+  </head>
+
+  <body>
+    <!--Import jQuery before materialize.js-->
+
+
+    <div class="navbar-fixed">
+      <nav class="blue darken-3">
+        <div class="nav-wrapper">
+          <a href="index.php" class="brand-logo">
+            <i class="microscope">
+              <img src="../svg/camic_vector.svg" id="svg1" class="camic_logo" width="100%" height="100%" viewBox="0 0 640 480" preserveAspectRatio="xMaxYMax"/>
+            </i>
+            [*]<?php print $base_config['title']; ?>
+          </a>
         </div>
-        <div class="container">
-            <div class="spacerTop"></div>            
-           
-            <div class="col-md-offset-1 col-md-10">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" title="Web Interface for Signup New users to QuIP."><span class="glyphicon glyphicon-file"></span>caMicroscope Admin Credential Update</h3>
+      </nav>
+    </div>
+
+    <main>
+    <div class="container">
+        <div class="spacerTop"></div>
+        <div class="col-md-offset-1 col-md-10">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" title="Web Interface for Signup New users to QuIP."><span class="glyphicon glyphicon-file"></span>caMicroscope User Signup</h3>
+                </div>
+                <div class="panel-body">
+                  <code>
+                    <?php echo $printres?>
+                  </code>
+                    <div class="row">
+                        <div class="col-md-12">
+                           <h1>ERROR</h1>
+                           <?php echo $_GET["message"]?>
+                         </div>
+                       <a href="index.php" class="waves-effect waves-light btn-large">Back to Admin Panel</a>
                     </div>
-                    <div class="panel-body">
-                        
-                        <div class="form-group row">
-                            <label  class="col-sm-10 control-label"><font color="red">Error Message:</font><?php echo $_GET["message"] ?></label>                                   
-                       </div>
-                           
-                    </div>
-                </div>            
+                </div>
             </div>
         </div>
     </div>
-       
- </body>
- </html>	
- 
+</div>
+    </main>
+
+    <div class="page-footer blue darken-4">
+      <p style="color:white;">U24 CA18092401A1, <b>Tools to Analyze Morphology and Spatially Mapped Molecular Data</b>; <i>Joel Saltz
+        PI</i> Stony Brook/Emory/Oak Ridge/Yale<br>NCIP/Leidos 14X138, <b>caMicroscope &ndash; A Digital Pathology
+        Integrative Query System</b>; <i>Ashish Sharma PI</i> Emory/WUSTL/Stony Brook<br />
+      </p>
+    </div>
+  </body>
+</html>

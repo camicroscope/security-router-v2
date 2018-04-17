@@ -1,185 +1,80 @@
 <?php
-    require ('../authenticate.php');
-?>
+  //require '../authenticate.php';
+  $config = require '../config.php';
+  ?>
 <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
-    <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
-        <title>Manage caMic Lymphocyte Superuser</title>
-        <script type='text/javascript' src='gen_validatorv4.js'  xml:space="preserve"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/camicroscope/css/annotools.css">
-        <link rel="stylesheet" href="/css/quipApps.css">
-        <link rel="stylesheet" href="/css/header.css">
-        <!--Import materialize.css-->
-        <!--<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css"  media="screen,projection"/>
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="/materialize/js/materialize.min.js"></script>-->
-        <script src="http://malsup.github.com/jquery.form.js"></script>
-        <script src="/js/vendor/bootstrap/bootstrap.min.js"></script>
-        <script src="http://bootboxjs.com/bootbox.js"></script>
-        <script src="/js/vendor/bootstrap-filestyle.min.js"></script>
-        <script src="/js/config.js"></script>
-
-    </head>
-
-    <body>
-
-      <nav class="navbar navbar-default">
-        <div class="navbar_conent">
-          <ul class="nav navbar-nav">
-
-            <li class="nav-item">
-              <a class="nav-link" href="/select.php">
-                <div class="icon">
-                  <span class="ico glyphicon glyphicon-home"></span>
-                  <span class="icolabel">Home</span>
-                </div>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="/FlexTables/index.php">
-                <div class="icon">
-                  <div class="microscope">
-                      <img src="/camicroscope/images/camic_vector.svg" id="svg1" width="100%" height="100%" viewBox="0 0 640 480" preserveAspectRatio="xMaxYMax">
-                  </div>
-                  <span class="icolabel">CAMIC</span>
-                </div>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="/camicSignup/index.html">
-                <div class="icon">
-                  <span class="ico glyphicon glyphicon-user"></span>
-                  <span class="icolabel">Add</span>
-                </div>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="/camicSignup/user_list.php">
-                <div class="icon">
-                  <span class="ico glyphicon glyphicon-th-list"></span>
-                  <span class="icolabel">Users</span>
-                </div>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="/camicSignup/adminUpdate.html">
-                <div class="icon">
-                  <span class="ico glyphicon glyphicon-lock"></span>
-                  <span class="icolabel">Password</span>
-                </div>
-              </a>
-            </li>
-          </ul>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Import Google Icon Font-->
+    <script type='text/javascript' src='gen_validatorv4.js'  xml:space="preserve"></script>
+    <link href="../css/icons.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"  media="screen,projection"/>
+    <script type="text/javascript" src="../js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <title>[*]<?php print $config['title']; ?> Lymphocyte Superusers</title>
+    <script src="../js/config.js"></script>
+    <script src="../js/jquery.form.js"></script>
+  </head>
+  <body>
+    <div class="navbar-fixed">
+      <nav class="blue darken-3">
+        <div class="nav-wrapper">
+          <a href="index.php" class="brand-logo">
+          <i class="microscope">
+          <img src="../svg/camic_vector.svg" id="svg1" class="camic_logo" width="100%" height="100%" viewBox="0 0 640 480" preserveAspectRatio="xMaxYMax"/>
+          </i>
+          [*]<?php print $config['title']; ?>
+          </a>
         </div>
       </nav>
+    </div>
+    <main>
+    <div class="container">
+      <div class="spacerTop"></div>
+      <div class="col-md-offset-1 col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" title="Lymphocyte App Superusers">Lymphocyte App Superusers</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-md-12">
+                <form id='lymphFormAssign' class="form-horizontal" name="lymphFormAssign" action='../camicroscope/api/Data/lymphocyteSuperusers.php' method='post' accept-charset='UTF-8'>
+                  <div class="input-field col s12">
+                    <input id="emailAssign" name="emailAssign" type="text" class="validate">
+                    <label for="emailAssign">User's Gmail Address</label>
+                  </div>
+                  <button id="submitButtonAssign" type="submit" value="Add User" class="btn-large blue waves-effect waves-light btn" action="submit">
+                  Add Superuser <i class="material-icons right">person_add</i>
+                  </button>
+                </form>
 
-       <div class="container">
-            <div class="spacerTop"></div>
-
-            <div class="col-md-offset-1 col-md-10">
-              <h2>Manage Superusers For caMic Lymphocyte App</h2>
-              <a href="#" class="btn btn-default openall" data-toggle="tooltip" title="Open all panels">Open All</a> <a href="#" class="btn btn-default closeall" data-toggle="tooltip" title="Close all panels">Close All</a>
-              <div class="panel-group" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" data-toggle="tooltip" title="Assign superuser rights for a Lymphocyte App"><a data-toggle="collapse" data-parent="#accordion" href="#collapse1"><span class="glyphicon glyphicon-user"></span> Assign Superuser for caMic Lymphocyte App</a></h3>
-                    </div>
-                    <div id="collapse1" class="panel-collapse collapse in">
-                    <div class="panel-body">
-                        <div class="spacerTop"></div>
-                        <div class="row">
-                            <div class="col-md-12">
-                           <!-- start form -->
-                            <form id='lymphFormAssign' class="form-horizontal" name="lymphFormAssign" action='../camicroscope/api/Data/lymphocyteSuperusers.php' method='post' accept-charset='UTF-8'>
-
-                                 <div class="form-group row">
-                                     <label for="emailAssign" class="col-sm-3 control-label">User's Gmail Address:</label>
-                                     <div class="col-sm-7">
-                                         <div class="input-group">
-                                               <input id="emailAssign" type="email" name="emailAssign" label="User's Gmail Address: " class="form-control input"  placeholder="Enter User's Gmail Address" data-toggle="tooltip" title="Enter a valid email address" required>
-                                                <div class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-envelope" alt="Required Control" style="color:black;font-size:14px;"></span> 
-                                                </div>
-                                            </div>
-                                           <span class="help-block"><span class="glyphicon glyphicon-star red" alt="Required Control" title="Required"></span>Enter a valid gmail address</span>
-                                        </div>
-                              </div>
-
-                              <div class="form-group row">
-                                <div class="col-sm-offset-3 col-sm-9">
-                                    <h5 id="msgAssign" class="msg"></h5>
-                                </div>
-                              </div>
-
-                              <div class="form-group row">
-                                   <div class="col-sm-offset-3 col-sm-7">
-                                        <input id="submitButtonAssign" type="submit" value="Assign Lymphocyte App Superuser" class="btn btn-md btn-block btn-success" data-toggle="tooltip" title="Assign superuser rights for a Lymphocyte App to this user">
-                                   </div>
-                              </div>
-                            </form>
-                            <!--end form-->
-                            <br>
-                           </div>
-                        </div>
-                    </div>
+                <div class="col-sm-offset-3 col-sm-9">
+                  <h5 id="msgAssign" class="msg"></h5>
                 </div>
-            </div>
-            <!-- start remove section -->
-            <div class="panel panel-danger">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" data-toggle="tooltip" title="Remove superuser for caMic Lymphocyte App"><a data-toggle="collapse" data-parent="#accordion" href="#collapse2"><span class="glyphicon glyphicon-user"></span> Remove Superuser for caMic Lymphocyte App</a></h3>
-                    </div>
-                   <div id="collapse2" class="panel-collapse collapse" >
-                    <div class="panel-body">
-                        <div class="spacerTop"></div>
-                        <div class="row">
-                            <div class="col-md-12">
-                           <!-- start form -->
-                            <form id='lymphFormRemove' class="form-horizontal" name="lymphFormRemove" action='../camicroscope/api/Data/lymphocyteSuperusers.php'  method='post' accept-charset='UTF-8'>
-
-                                 <div class="form-group row">
-                                        <label for="emailRemove" class="col-sm-3 control-label">User's Gmail Address:</label>
-                                        <div class="col-sm-7">
-                                            <div class="input-group">
-                                               <input id="emailRemove" type="email" name="emailRemove" label="User's Gmail Address: " class="form-control input"  placeholder="Enter User's Gmail Address" data-toggle="tooltip" title="Enter a valid email address" required>
-                                                <div class="input-group-addon">
-                                                    <span class="glyphicon glyphicon-envelope" alt="Required Control" style="color:black;font-size:14px;"></span> 
-                                                </div>
-                                            </div>
-                                           <span class="help-block"><span class="glyphicon glyphicon-star red" alt="Required Control" title="Required"></span>Enter a valid gmail address</span>
-                                        </div>
-                                  </div>
-
-                                  <div class="form-group row">
-                                      <div class="col-sm-offset-3 col-sm-9">
-                                          <h5 id="msgRemove" class="msg"></h5>
-                                      </div>
-                                  </div>
-
-                                  <div class="form-group row">
-                                     <div class="col-sm-offset-3 col-sm-7">
-                                            <input id="submitButtonRemove" type="submit"  value="Remove Lymphocyte App Superuser" class="btn btn-md btn-block btn-danger" data-toggle="tooltip" title="Remove this Lymphocyte App Superuser" >
-                                       </div>
-                                  </div>
-                                </form>
-                                <!--end form-->
-                                <br>
-                            </div>
-                        </div>
-                    </div>
+                <form id='lymphFormRemove' class="form-horizontal" name="lymphFormRemove" action='../camicroscope/api/Data/lymphocyteSuperusers.php'  method='post' accept-charset='UTF-8'>
+                  <div class="input-field col s12">
+                    <input id="emailRemove" name="emailRemove" type="text" class="validate">
+                    <label for="emailRemove">User's Gmail Address</label>
+                  </div>
+                  <button id="submitButtonRemove" type="submit" value="Remove User" class="btn-large blue waves-effect waves-light btn" action="submit">
+                  Remove Superuser <i class="material-icons right">person_remove</i>
+                  </button>
+                </form>
+                <div class="col-sm-offset-3 col-sm-9">
+                  <h5 id="msgRemove" class="msg"></h5>
                 </div>
+              </div>
             </div>
-            <!-- end delete section -->
-           </div>
-         </div>
-       </div>
-    <script src="/js/lymph-superusers.js"></script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../js/lymph-superusers.js"></script>
   </body>
 </html>

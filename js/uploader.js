@@ -26,7 +26,6 @@ $(document).ready(function() {
       document.getElementById("submitButton").disabled = false;
       //console.log(document.getElementById("imageid").innerHTML);
       console.log(response.status);
-      console.log("Call Tahsin...");
       document.getElementById("status").innerHTML =
         "Problem with uploading.";
       Materialize.toast('Problem with uploading.', 4000);
@@ -68,7 +67,7 @@ $(document).ready(function() {
       url: "camicroscope/api/Data/osdMetadataRetriever.php?imageId=" +
         imageid,
       success: function(response) {
-        if (response.toString() === ",") {
+        if (response[0] === null) {
           $('#uploadme').ajaxSubmit(options);
         } else {
           document.getElementById("status").innerHTML =

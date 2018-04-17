@@ -1,21 +1,23 @@
 <?php
-require_once('config/security_config.php');
-//$enable_security = true;
+$config = require 'config.php';
+
 // start sessions
 session_start();
 
+// renew sessions between 30 and 60 min old
+require 'session_renewer.php';
 
-if(!$enable_security){
+if($config['disable_security']){
 	 /* Disable authentication*/
-	 $_SESSION["api_key"] = "APIKEY312"; //Don't change this string, we do a find and replace to populate the actual api key here.
-	 $_SESSION["email"] = "viewer@quip"; //dummy user. 
+	 $_SESSION["api_key"] = str_replace("%0A", "", urlencode($config['api_key']));
+	 $_SESSION["email"] = "viewer@quip"; //dummy user.
 } else {
 	if (!isset($_SESSION["api_key"])) {
 	    session_unset();
-	    header("Location:http://".$_SERVER["HTTP_HOST"].$folder_path."index.php");
-	    //echo "try to redirect";
+	    header("Location:http://".$_SERVER["HTTP_HOST"].$config['folder_path']."index.php");
 	}
 }
+
 /*
 You can use this file to control access to any .php file
 All you need to do is:
