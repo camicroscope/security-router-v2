@@ -209,7 +209,7 @@ $_SESSION["userType"] = $userType;
 
             <section class="post">
                 <!-- a href="FlexTables/index.php" class="image"><img src="images/camic.jpg" alt="" /></a -->
-                <a href="table/table2.php" class="image"><img src="images/camic.jpg" alt=""/></a>
+                <a href="table/vtr_pilot_table.php" class="image"><img src="images/camic.jpg" alt=""/></a>
                 <div class="content">
                     <!--h3>caMicroscope</h3-->
                     <h3>VTR Pilot</h3>
@@ -218,7 +218,7 @@ $_SESSION["userType"] = $userType;
                                       <a href="FlexTables/index.php" class="button">More</a>
                     -->
                     <p>Use caMicroscope to view curated images and features from the various registries</p>
-                    <a href="table/table2.php" class="button">More</a>
+                    <a href="table/vtr_pilot_table.php" class="button">More</a>
                 </div>
             </section>
 
@@ -241,11 +241,11 @@ $_SESSION["userType"] = $userType;
             </section>
 
             <section class="post">
-                <a href="table/table.php" class="image"><img src="images/camic.jpg" alt="" style="filter: grayscale(100%);"/></a>
+                <a href="table/camicro_qc_table.php" class="image"><img src="images/camic.jpg" alt="" style="filter: grayscale(100%);"/></a>
                 <div class="content">
                     <h3>caMicroscope QC</h3>
                     <p>Use caMicroscope to view features that have been extracted but not fully curated</p>
-                    <a href="table/table.php" class="button">More</a>
+                    <a href="table/camicro_qc_table.php" class="button">More</a>
                 </div>
             </section>
 
