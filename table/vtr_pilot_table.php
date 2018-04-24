@@ -44,16 +44,16 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css"/>
 
         <link rel="stylesheet" href="style.css" type="text/css"/>
-	<title>SEER VTR</title>
+	<title>Curated Image Result</title>
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"> </script>
       </head>
       <body>
-		<h1 id="heading">SEER VTR</h1>
-		<div id="s_search">
-			<input type="text" id="search" placeholder="Search" onkeyup="search()"/>
-		</div>
-		<div id="table"></div>
+	<h1 id="heading">Curated Image Result</h1>
+	<div id="s_search">
+		<input type="text" id="search" placeholder="Search" onkeyup="search()"/>
+	</div>
+	<div id="table"></div>
 		
 <script type="text/javascript" src="json-to-table.js"></script>
 <script type="text/javascript"> 
@@ -118,9 +118,17 @@ for(var i in data){
 		newData.push(data[i]);
 	}*/
         newData = data;					
-	}	
-	var table =ConvertJsonToTable(newData, 'tbl' ,null, "Download");
-	$("#table").append(table);
+	}
+	if(newData.length >= 1){
+	  var table =ConvertJsonToTable(newData, 'tbl' ,null, "Download");
+	  $("#table").append(table);
+	}
+        else {
+          var note="<h4>There are no curated results. Please view images and analysis results using the curation app.</h4>";
+          $("#s_search").html("");
+          $("#table").html(note);
+        }
+	
 			
   </script>
 		
