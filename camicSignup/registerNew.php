@@ -36,16 +36,39 @@
   } else
      $output = "done sucessfully.";
 
-  //The JSON data.
-  $u24_user = array(
+  //get super user count
+  $getUrl = $config['findSuperUserCount'];
+  $getUrl = $getUrl . "api_key=$api_key";
+  //echo $getUrl;
+  $getRequest = new RestRequest($getUrl,'GET');
+  $getRequest->execute();
+  $getRequest->responseBody;
+  $return_obj=json_decode($getRequest->responseBody,true);
+  $superUserCount=$return_obj['count'];
+
+  if($superUserCount == 0){ //add first user as super user
+    //The JSON data.
+   $u24_user = array(
+     'userType'=>'superUser',
      'fname' => $fname,
      'lname' => $lname,
-	   'username' =>$username,
-	   'email' => $email,
+     'username' =>$username,
+     'email' => $email,
      'category' => $category
-  );
+   );
+  } else {
+    //The JSON data.
+    $u24_user = array(
+     'fname' => $fname,
+     'lname' => $lname,
+     'username' =>$username,
+     'email' => $email,
+     'category' => $category
+    );
+   }
+  
 
-	$url = $postUrl . "?api_key=".$api_key;
+  $url = $postUrl . "?api_key=".$api_key;
   $printres = "";
   $printres .= "posting data\n";
   $printres .=  $url;
