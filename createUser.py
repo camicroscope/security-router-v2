@@ -25,7 +25,7 @@ except ModuleNotFoundError:
 bindaashost = "quip-data:9099"
 trusted_secret = "9002eaf56-90a5-4257-8665-6341a5f77107"
 try:
-    ini_str = '[root]\n' + open('config.ini', 'r').read()
+    ini_str = '[root]\n' + open('config/config.ini', 'r').read()
     ini_fp = StringIO.StringIO(ini_str)
     config = ConfigParser.RawConfigParser()
     config.readfp(ini_fp)
