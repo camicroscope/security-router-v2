@@ -468,7 +468,7 @@
                 <td>Student Assigned to</td>                
               </tr>              
               <?php 		          
-              for ($i = $startNumber5; $i < $endNumber5; $i++) {
+              for ($i = $startNumber6; $i < $endNumber6; $i++) {
                  $a=$imageCuratedArray[$i];                                                   
                    echo "<tr><td>" . $a['case_id'] . "</td><td>" . $a['width'] . "</td><td>" . $a['height'] . "</td><td>Curated</td><td>" . $a['assign_to'] . "</td></tr>";                   
                }?>
