@@ -212,10 +212,10 @@ $_SESSION["userType"] = $userType;
                 <a href="table/vtr_pilot_table.php" class="image"><img src="images/camic.jpg" alt=""/></a>
                 <div class="content">
                     <!--h3>caMicroscope</h3-->
-                    <h3>VTR Pilot</h3>
+                    <h3>Curated Results</h3>
                     <!--
-                                      <p>Visualize digitized pathology images, pathomic features, and annotate whole slide tissue images.</p>
-                                      <a href="FlexTables/index.php" class="button">More</a>
+                    <p>Visualize digitized pathology images, pathomic features, and annotate whole slide tissue images.</p>
+                    <a href="FlexTables/index.php" class="button">More</a>
                     -->
                     <p>Use caMicroscope to view curated images and features from the various registries</p>
                     <a href="table/vtr_pilot_table.php" class="button">More</a>
@@ -239,7 +239,7 @@ $_SESSION["userType"] = $userType;
                     <a href="FlexTables/index.php" class="button">More</a>
                 </div>
             </section>
-
+            <!--
             <section class="post">
                 <a href="table/camicro_qc_table.php" class="image"><img src="images/camic.jpg" alt="" style="filter: grayscale(100%);"/></a>
                 <div class="content">
@@ -248,7 +248,7 @@ $_SESSION["userType"] = $userType;
                     <a href="table/camicro_qc_table.php" class="button">More</a>
                 </div>
             </section>
-
+             -->
             <?php
             $userType=$_SESSION["userType"];
             $template = <<<EOT
@@ -262,7 +262,7 @@ $_SESSION["userType"] = $userType;
         </section>
 EOT;
 
-            if($userType=="superuser"){
+            if($userType=="superUser"){
                 echo $template;
             }
             ?>
