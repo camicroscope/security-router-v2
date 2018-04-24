@@ -3,7 +3,7 @@
 require_once('param_get.php');
 
 try{
-  $config_file = parse_ini_file('config.ini');
+  $config_file = parse_ini_file('config/config.ini');
 }
 catch(Exception $e){
 }
