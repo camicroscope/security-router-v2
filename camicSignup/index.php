@@ -105,7 +105,7 @@ $_SESSION["name"] = "quip";
                 <div class="top_bar">Add User</div>
                 <div class="card-image">
                   <div class="darkimg">
-                    <img src="../img/view.png">
+                    <!-- <img src="../img/view.png"> -->
                   </div>
                 </div>
                 <div class="card-content">
@@ -120,7 +120,7 @@ $_SESSION["name"] = "quip";
                 <div class="top_bar">Change Admin Password</div>
                 <div class="card-image">
                   <div class="darkimg">
-                    <img src="../img/view.png">
+                    <!-- <img src="../img/view.png"> -->
                   </div>
                 </div>
                 <div class="card-content">
@@ -135,7 +135,7 @@ $_SESSION["name"] = "quip";
                 <div class="top_bar">List Users</div>
                 <div class="card-image">
                   <div class="darkimg">
-                    <img src="../img/view.png">
+                    <!-- <img src="../img/view.png"> -->
                   </div>
                 </div>
                 <div class="card-content">
@@ -150,7 +150,7 @@ $_SESSION["name"] = "quip";
                 <div class="top_bar">Lymphocyte Superusers</div>
                 <div class="card-image">
                   <div class="darkimg">
-                    <img src="../img/view.png">
+                    <!-- <img src="../img/view.png"> -->
                   </div>
                 </div>
                 <div class="card-content">
