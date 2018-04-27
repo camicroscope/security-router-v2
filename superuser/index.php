@@ -34,7 +34,90 @@
 
 
     session_start();
+ 
     
+     //update is_processing and is_curated status of image list
+    $dataUrl = "http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/query/getAll";
+    $apiKey = $_SESSION["api_key"];
+    $dataUrl = $dataUrl . "?api_key=".$apiKey;
+    $allImages_json = array();
+    $allImages_json = fetchData($dataUrl);
+
+    for ($i = 0; $i < count($allImages_json); $i++) {
+       $item=$allImages_json[$i];
+       $a = (array)$item;
+       $case_id=$a['case_id'];
+       $assign_to=$a['assign_to'];
+       $is_processing=$a['is_processing'];
+       $is_curated=$a['is_curated'];
+       //update is_processing
+       if(!empty($assign_to) && empty($is_processing)){
+         $dataUrl = "http://quip-data:9099/services/Camicroscope_Annotations/MarkupsForImages/query/findCompositeDatasetCount";
+         $apiKey = $_SESSION["api_key"];
+         $user=substr($assign_to, 0, strpos($assign_to, '@'));
+         $execution_id=$user."_composite_input";
+         //echo $user, $execution_id;
+         $dataUrl = $dataUrl . "?api_key=".$apiKey."&case_id=".$case_id."&execution_id=".$execution_id;
+         //echo $dataUrl;
+         //echo "<br>";
+         $return_obj = fetchData($dataUrl);
+         //print_r($return_obj);
+         $return_array=(array)$return_obj;
+         //print_r($return_array);
+         $returnCount = $return_array['count'];
+         //echo $returnCount;
+         //echo "<br>";
+         if ($returnCount > 0) {
+           $updateUrl = "http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/delete/imageIsProcessingUpdate";
+           $apiKey = $_SESSION["api_key"];
+           $updateUrl = $updateUrl . "?api_key=".$apiKey."&case_id=".$case_id."&is_processing=yes";
+           //echo $updateUrl;
+           $curl = curl_init($updateUrl);
+           curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+           curl_setopt($curl, CURLOPT_HEADER, false);
+           curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+           curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json',"OAuth-Token: $token"));
+           $response = curl_exec($curl);
+           //print_r($response);
+           //exit();
+         }
+       }
+       //update is_curated
+        if(!empty($assign_to) && empty($is_curated)){
+         $dataUrl = "http://quip-data:9099/services/Camicroscope_Annotations_comp/MarkupsForImages/query/findCompositeDatasetCount";
+         $apiKey = $_SESSION["api_key"];
+         $user=substr($assign_to, 0, strpos($assign_to, '@'));
+         $execution_id=$user."_composite_dataset";
+         //echo $user, $execution_id;
+         $dataUrl = $dataUrl . "?api_key=".$apiKey."&case_id=".$case_id."&execution_id=".$execution_id;
+         //echo $dataUrl;
+         //echo "<br>";
+         $return_obj = fetchData($dataUrl);
+         //print_r($return_obj);
+         $return_array=(array)$return_obj;
+         //print_r($return_array);
+         $returnCount = $return_array['count'];
+         //echo $returnCount;
+         //echo "<br>";
+         if ($returnCount > 0) {
+           $updateUrl = "http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/delete/imageIsCuratedUpdate";
+           $apiKey = $_SESSION["api_key"];
+           $updateUrl = $updateUrl . "?api_key=".$apiKey."&case_id=".$case_id."&is_curated=yes";
+           //echo $updateUrl;
+           $curl = curl_init($updateUrl);
+           curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+           curl_setopt($curl, CURLOPT_HEADER, false);
+           curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+           curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json',"OAuth-Token: $token"));
+           $response = curl_exec($curl);
+           //print_r($response);
+           //exit();
+         }
+       }
+
+     }
+    //end of update is_processing and is_curated status of image list
+
     $dataUrl = "http://quip-data:9099/services/Camicroscope_DataLoader/DataLoader/query/getAll";      
     $apiKey = $_SESSION["api_key"];    
     $dataUrl = $dataUrl . "?api_key=".$apiKey;    
