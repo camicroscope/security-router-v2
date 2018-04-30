@@ -20,7 +20,6 @@ If you do not wish to sign in users, please see [Disabling Authentication](https
 
 ### Step 2. Configuration
 
-#Configuration
 Configuration is done through a headerless ini file, Config.ini
 
 | Key | Function | Default |
