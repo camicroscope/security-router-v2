@@ -3,6 +3,7 @@ import os
 import subprocess
 import pipes
 import sys
+import json
 
 # user is viewer@quip unless a username is passed
 user = "viewer@quip"
