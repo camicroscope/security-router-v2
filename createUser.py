@@ -37,7 +37,7 @@ try:
 except BaseException as e:
   pass
 
-list_user_cmd = "java -jar /var/www/html/Admin/trusted-app-client-0.0.1-jar-with-dependencies.jar -action l -id camicSignup secret " + trusted_secret + " -url http://" + bindaashost + "/trustedApplication"
+list_user_cmd = "java -jar /var/www/html/Admin/trusted-app-client-0.0.1-jar-with-dependencies2.jar -action l -id camicSignup -secret " + trusted_secret + " -url http://" + bindaashost + "/trustedApplication"
 create_user_cmd = "java -jar /var/www/html/Admin/trusted-app-client-0.0.1-jar-with-dependencies.jar -action i -username "+user+"  -id camicSignup -secret " + trusted_secret + " -comments loader -expires 01/01/2050  -url http://" + bindaashost + "/trustedApplication"
 
 user_list = os.popen(list_user_cmd).read()
