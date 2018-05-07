@@ -128,7 +128,7 @@ $_SESSION["name"] = "quip";
               </div>
             </div>
           </a>
-          <a href="../camicSignup/user_list.php">
+          <a href="user_list.php">
             <div class="col s12 l6">
               <div class="card" id="view">
                 <div class="top_bar">List Users</div>
@@ -143,7 +143,7 @@ $_SESSION["name"] = "quip";
               </div>
             </div>
           </a>
-          <a href="../camicSignup/lymphSuperuser.php">
+          <a href="lymphSuperuser.php">
             <div class="col s12 l6">
               <div class="card" id="view">
                 <div class="top_bar">Lymphocyte Superusers</div>
