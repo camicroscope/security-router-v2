@@ -291,6 +291,18 @@ EOT;
 
             </section>
 
+            <section class="post">
+                <a href="Admin/index.php" class="image"><img src="images/pic05.jpg" alt="" /></a>
+                <div class="content">
+                    <h3>User Managment</h3>
+                    <p>Add, delete, and list users.</p>
+
+                    <a href="Admin/index.php" class="button">More</a>
+
+                </div>
+
+            </section>
+
         </div>
 
 </section>
