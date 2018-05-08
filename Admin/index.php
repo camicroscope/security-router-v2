@@ -125,9 +125,6 @@ session_start();
                       </form>
                     </div>
                   </div>
-                  <div class="modal-footer">
-                    <a href="../index.php" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
-                  </div>
                 </div>
 
                 <div id="modal2" class="modal modal-fixed-footer">
@@ -152,9 +149,6 @@ session_start();
                             </button>
                       </form>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
                   </div>
                 </div>
 
