@@ -120,7 +120,7 @@ session_start();
                               <label for="email">User's Gmail Address</label>
                             </div>
                             <button id="submitButton" type="submit" value="Add User" class="btn-large blue waves-effect waves-light btn" action="submit">
-                            Sign Up User <i class="material-icons right">person_add</i>
+                            Sign Up User
                             </button>
                       </form>
                     </div>
@@ -148,7 +148,7 @@ session_start();
                               <label for="newpasswd2">Confirm New Password</label>
                             </div>
                             <button id="submitButton" type="submit" value="Change Password" class="btn-large blue waves-effect waves-light btn" action="submit">
-                            Change Password <i class="material-icons right">person_add</i>
+                            Change Password
                             </button>
                       </form>
                     </div>

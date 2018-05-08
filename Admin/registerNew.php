@@ -22,7 +22,7 @@
   $expirationDate='01/01/2020';
   $category="bindaas_user" ;
 
-  $command='sh add_user.sh' . ' ' . $username . ' ' . $email . ' ' .  $expirationDate . ' '. $base_config['trusted_secret'] . ' ' $base_config['trusted_url'];
+  $command='sh add_user.sh' . ' ' . $username . ' ' . $email . ' ' .  $expirationDate . ' ' . $base_config['trusted_secret'] . ' ' . $base_config['trusted_url'];
 
   $output1 =shell_exec($command);
   $output1 = str_replace('"', "'", $output1);
