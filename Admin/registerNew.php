@@ -33,8 +33,9 @@
   } else if ($errorPosition == false ) {
     $output = "done sucessfully.";
     $output1="Your input has been sucessfully added to Bindaas database!";
-  } else
+  } else {
      $output = "done sucessfully.";
+  }
 
   //get super user count
   $getUrl = $config['findSuperUserCount'];
