@@ -101,7 +101,7 @@ session_start();
 
                 </header>
 
-                <!-- Modals -- >
+                <!-- Modals -->
                 <div id="modal1" class="modal modal-fixed-footer">
                   <div class="modal-content">
                     <div class="container">
@@ -162,14 +162,14 @@ session_start();
 
                 <div class="content">
 
-                    <a href="#" class="image fit"><img src="images/banner1.jpg" alt="" /></a>
+                    <a href="#" class="image fit"><img src="../images/banner1.jpg" alt="" /></a>
 
                 </div>
 
                 <div class="posts">
 
                         <section class="post">
-                            <a href="#modal1" class="image" rel="modal:open"><img src="images/pic05.jpg" alt="" /></a>
+                            <a href="#modal1" class="image" rel="modal:open"><img src="../images/pic05.jpg" alt="" /></a>
                             <div class="content">
                                 <h3>Add User</h3>
                                 <p>Sign up a New User for caMicroscope</p>
@@ -181,7 +181,7 @@ session_start();
                         </section>
 
                         <section class="post">
-                            <a href="#modal2" class="image" rel="modal:open"><img src="images/pic05.jpg" alt="" /></a>
+                            <a href="#modal2" class="image" rel="modal:open"><img src="../images/pic05.jpg" alt="" /></a>
                             <div class="content">
                                 <h3>Change Admin Password</h3>
                                 <p>Change the password required to access this section</p>
@@ -193,7 +193,7 @@ session_start();
                         </section>
 
                         <section class="post">
-                            <a href="user_list.php" class="image"><img src="images/pic05.jpg" alt="" /></a>
+                            <a href="user_list.php" class="image"><img src="../images/pic05.jpg" alt="" /></a>
                             <div class="content">
                                 <h3>List Users</h3>
                                 <p>A list of users who can access caMicroscope</p>
@@ -205,7 +205,7 @@ session_start();
                         </section>
 
                         <section class="post">
-                            <a href="lymphSuperuser.php" class="image"><img src="images/pic05.jpg" alt="" /></a>
+                            <a href="lymphSuperuser.php" class="image"><img src="../images/pic05.jpg" alt="" /></a>
                             <div class="content">
                                 <h3>Lymphocyte Superusers</h3>
                                 <p>Manage users with Lymphocyte Superuser Access</p>
