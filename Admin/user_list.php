@@ -3,7 +3,7 @@
   //require '../authenticate.php';
   $config = require '../config.php';
 
-  $command='sh list_user.sh';
+  $command= 'sh list_user.sh' . ' ' . $base_config['trusted_secret'] . ' ' . $base_config['trusted_url'];
 
   $output1 =shell_exec($command);
 

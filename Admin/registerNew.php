@@ -22,7 +22,7 @@
   $expirationDate='01/01/2020';
   $category="bindaas_user" ;
 
-  $command='sh add_user.sh' . ' ' . $username . ' ' . $email . ' ' .  $expirationDate ;
+  $command='sh add_user.sh' . ' ' . $username . ' ' . $email . ' ' .  $expirationDate . ' ' . $base_config['trusted_secret'] . ' ' . $base_config['trusted_url'];
 
   $output1 =shell_exec($command);
   $output1 = str_replace('"', "'", $output1);
@@ -33,8 +33,9 @@
   } else if ($errorPosition == false ) {
     $output = "done sucessfully.";
     $output1="Your input has been sucessfully added to Bindaas database!";
-  } else
+  } else {
      $output = "done sucessfully.";
+  }
 
   //get super user count
   $getUrl = $config['findSuperUserCount'];
