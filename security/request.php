@@ -116,7 +116,7 @@ function userRegistration($email , $name)
 ?>
         <p>Since you don't have an account with caMicroscope, you need to sign up as an administrator or ask your administrator to grant you access.</p>
         <p>Administrator can signup himself/herself and  add other users to the caMicroscope by click below link.</p>
-        <p><a href="/Admin/index.html">Signup User to Access caMicroscope</a></p>
+        <p><a href="/Admin/index.php">Signup User to Access caMicroscope</a></p>
 	 <!--
         <form role="form" action="?doAction=submitSignUp" method="post">
 		<div class="form-group">
