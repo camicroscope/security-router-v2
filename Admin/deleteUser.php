@@ -5,7 +5,7 @@
 
   $email=$_POST['email'];
 
-  $command='sh delete_user.sh'. ' ' . $email . ' '. $base_config['trusted_secret'] . ' ' $base_config['trusted_url'];
+  $command='sh delete_user.sh'. ' ' . $email . ' '. $base_config['trusted_secret'] . ' ' . $base_config['trusted_url'];
 
   $output =shell_exec($command);
 
