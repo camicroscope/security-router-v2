@@ -2,12 +2,6 @@
 
 session_start();
 
-require '../authenticate.php';
-
-//require 'branding.php';
-
-//require_once 'config/security_config.php';
-
 $config = require '../config.php';
 
 
