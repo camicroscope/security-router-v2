@@ -5,7 +5,7 @@ if [ $# -eq 1 ] && [ $1 == "help" ]
 then
    echo $0 "<IMS Name/username/name> <email address> <key expiration data mm/dd/yyyy> <bindaas trusted secret[optional]> <bindaas trustedApplication url [optional]>"
    exit 0;
-elif [ $# -eq 0 ] || [ $# -ne 3 ]
+elif [ $# -eq 0 ] || [ $# -lt 3 ]
 then
     echo "Usage: $0 <IMS Name/username/name> <email address> <key expiration data mm/dd/yyyy> <bindaas trusted secret[optional]> <bindaas trustedApplication url [optional]>"
     exit;
