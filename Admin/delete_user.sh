@@ -5,7 +5,7 @@ if [ $# -eq 1 ] && [ $1 == "help" ]
 then
    echo $0 "<user email address> <bindaas trusted secret[optional]> <bindaas trustedApplication url [optional]>"
    exit 0;
-elif [ $# -eq 0 ] || [ $# -ne 1 ]
+elif [ $# -eq 0 ] || [ $# -lt 1 ]
 then
     echo "Usage: $0 <user email address> <bindaas trusted secret[optional]> <bindaas trustedApplication url [optional]>"
     exit;
