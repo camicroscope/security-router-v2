@@ -4,7 +4,7 @@ $(document).ready(function () {
     var msgNotValidEmail = 'The value is not a valid email address.';
     var msgSuperuserExists = 'This lymphocyte superuser already exists.';
     var msgSuperuserNotExists = "This lymphocyte superuser does not exist.";
-    var msgSessionNotEstablished = 'Error on post.  Your session could not be established.  Please login to QuIP to meet access policy requirements. ';
+    var msgSessionNotEstablished = 'Error on post.  Your session could not be established.  Please <a href=\'/\'>login</a> to QuIP to meet access policy requirements. ';
     var msgFormError = 'Form Error';
     var msgResponseNoData = 'No data';
     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
