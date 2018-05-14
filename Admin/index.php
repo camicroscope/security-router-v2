@@ -68,7 +68,7 @@ session_start();
 
                 <ul>
 
-                    <li><a href="../select.php">Back</a></li>
+                    <li><a href="../select.php">Home</a></li>
 
                     <li><a target="_blank" href="https://goo.gl/forms/3LXeLRD4bGERkqFy1">Feedback</a></li>
 
