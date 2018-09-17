@@ -1,51 +1,22 @@
-# Security
-## User authentication for caMicroscope 
+# elevate
+Gateway and proxy which asks another server or resource for authorization
 
-### Enabling Authentication
-In order to sign in your users with their Google Accounts, you will need to integrate Google Sign-In into your app.
+## Usage
+A request to <this server>/data/get?id=apple is split into a type (data) and a path (get?id=apple). The server associated with the route for data then gets <that server>/get?id=apple as a request.
 
-If you do not wish to sign in users, please see [Disabling Authentication](https://github.com/camicroscope/Security/blob/release/README.md#disabling-authentication).
+## Setup
+First, set up routes.json. This should have each type associated with a host, and optionally a "\_default" attribute. If no type is met, it will then route the full url to the host specified.
 
-### Step 1. Setting up Google Sign-In
+This tool is especially set up to check for authorization, but this is deployment specific so far, so it requires tinkering. In elevate.js, see the checkAuth function.
 
-* First, go to [Google API Console](https://console.developers.google.com/project/_/apiui/apis/library)
-* From the drop-down in the top left corner, create a new project
-* Next, select Credentials in the left side-bar, then select "OAuth Client ID" in the drop-down, and then "Configure Consent Screen"
-* Fill in your URL, etc, and click "Save"
-* Then, select "Web application", and fill in the fields
-* Finally, copy your **"client ID"** and **"client secret"**
+The checkAuth function, out of the box, always returns true, but it should be replaced, if desired, with a check that the resource requested is authorized. For  the <this server>/data/get?id=apple example, this method may know that we can ask another server, <auth server>/users/<uid>/fruit to see which fruit that user can see, and check if apple is among the list.
 
+## Use with Docker
+This tool is intended to be used as a single exposed container in a docker deployment. The other containers should be networked to this container, but not otherwise accessible to outside requests.
 
-**Ref: [Google Sign-In for Websites](https://developers.google.com/identity/sign-in/web/devconsole-project)**
-
-### Step 2. Configuration
-
-Configuration is done through a headerless ini file, Config.ini
-
-| Key | Function | Default |
-| --- | --- | --- | 
-|trusted_secret| bindaas trusted secret | - |
-|disable_security| a boolean which disables user login if true | false |
-|trusted_id | the application name for bindaas | camicSignup |
-|trusted_url | the bindaas endpoint for trust |http://quip-data:9099/trustedApplication |
-|client_id | client id from google oauth (Step 1) | an unusable value|
-|client_secret | client secret from google oauth (Step 1) | an unusable value|
-|redirect_uri | the redirection to take after oauth (Step 1) | postmessage|
-|title| the title as shown on the page title and some headers | caMicroscope|
-|suffix | a tagline printed after the title on the login page | empty |
-|description | a description of the application/deployment | Look at Slides |
-| footer | designed for grant or contact information | caMicroscope – A Digital Pathology Integrative Query System; Ashish Sharma PI Emory |
-|download_link | the url linked to on the download button | https://github.com/camicroscope |
-|folder_path| the relative path of the folder | \/ |
-| dataHost | the data container’s name and port | quip-data:9099 |
-|kueHost | the jobs container’s name and port | quip-jobs:3000 |
- 
+## Disclaimer
+I have yet to do any good testing on how secure this method is, so consider it a prototype, not production ready quite yet.
 
 
-### Disabling Authentication
-
-To disable authentication edit `config.ini`:
-
-* Set `disable_security=true`
-* You should be able to see the `/select.php` now when you launch the application from the browser.
-
+## IIP Special Case
+There's a special case for iip for use with bindaas, set IIPMETHOD=yes to use
