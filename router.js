@@ -8,56 +8,14 @@ const getUrlParam = require("./getUrlParam")
 
 app.use(express.json());
 
-// simple method which takes care of auth
-function checkAuthOff(type, path, auth, request){
-  return true
-}
 
-//const checkAuth = require("./bindaas_auth.js") || checkAuthOff
-const checkAuth = checkAuthOff; // for testing
+// Sessions
+// CACHE Resolvers
+// CACHE Keys, put in session
 
-async function route(type, path, auth, request){
-  let hostlist
-  try{
-    hostlist = JSON.parse(fs.readFileSync("routes.json"));
-  } catch (e){
-    hostlist = JSON.parse(fs.readFileSync("routes.json.example"));
-  }
-  if (type in hostlist){
-    // special case for iip, if enabled
-    if (process.env.IIPMETHOD=="yes"){
-      if (type == "img"){
-        // translate path, then route
-        var url = "http://ca-data:9099/services/caMicroscope/Slide/query/get?id=" + getUrlParam('slide', path)
-        var options = {
-          uri: url,
-          method: "get",
-          json: true
-        }
-        var slide = await rp(options);
-        var location = slide[0].location
-        if (location){
-          var suffix = ""
-          // handle seeking files
-          if(path.includes("_files")){
-            location = location.split(".dzi")[0]
-            suffix = "_files" + path.split("_files")[1]
-          }
-          // case where it's an img
-          return hostlist['img']+ "fcgi-bin/iipsrv.fcgi?DeepZoom=" + location + suffix
-        }
-      }
-    }
-    return hostlist[type] + path
-  } else if ('_default' in hostlist){
-    // if not, use _default
-    return hostlist['_default'] + request.originalUrl
-  } else {
-    // last try, maybe it's local
-    return request.originalUrl
-  }
-}
+// User/security routes
 
+// resolve using routes.json
 
 
 app.use("/", async function(req, res){
