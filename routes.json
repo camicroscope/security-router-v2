@@ -28,30 +28,23 @@
         "find":"/Template/query/find",
         "post":"/Template/submit/json",
         "delete":"/Template/delete/deleteTemplate"
-      },
+      }
     },
     "img": {
       "_base":"http://ca-iip/fcgi-bin/iipsrv.fcgi",
       "Slide":{
         "get":{
-          "source":"{IN}",
-          "destination":"?DeepZoom={OUT}"
+          "destination":"?DeepZoom={OUT}",
+          "url":"http://ca-data:9099/services/caMicroscope/Slide/query/get?slide={IN}",
+          "field":"location",
+          "before":["_files", ".dzi"]
         }
       }
-    }
-  },
-  "resolvers":{
-    "LOCATION":{
-      "url":"http://ca-data:9099/services/caMicroscope/Slide/query/get?slide={}",
-      "field":"location",
-      "before":["_files", ".dzi"]
     }
   },
   "keycheck": {
     "field": "keys",
     "url": "http://ca-data:9099/services/caMicroscope/Auth/query/get?user={USER}",
-    "inputIsList": "true",
-    "outputIsList": "true",
     "passIfMissing": "true"
   }
 }
