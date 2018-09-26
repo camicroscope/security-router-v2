@@ -4,6 +4,22 @@ const rp = require('request-promise');
 const app = express();
 const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
+const passport = require("passport")
+app.use(passport.initialize());
+
+const User = require("./User.js")
+
+var Strategy = require('passport-openid').Strategy;
+
+passport.use(new Strategy({
+    returnURL: 'http://localhost:3000/auth/openid/return',
+    realm: 'http://localhost:3000/'
+  },
+  function(identifier, done) {
+    User.findByOpenID({ openId: identifier }, function (err, user) {
+      return done(err, user);
+    });
+  }
 
 let RESOLVER_CACHE = {}
 
