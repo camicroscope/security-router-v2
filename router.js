@@ -4,25 +4,13 @@ const rp = require('request-promise');
 const app = express();
 const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
-const passport = require("passport")
+var jwt = require('jsonwebtoken');
 
-app.use(passport.initialize());
 app.use(express.json());
 
 const User = require("./User.js")
-
-var Strategy = require('passport-openidconnect').Strategy;
-
-passport.use(new Strategy({
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    authorizationURL: 'https://login0.myauth0.com/i/oauth2/authorize',
-    tokenURL: 'https://login0.myauth0.com/oauth/token',
-    callbackURL: 'http://localhost:3000/callback'
-  },
-  function(token, tokenSecret, profile, cb) {
-    return cb(null, profile);
-}));
+var SECRET = process.env.SECRET
+var DISABLE_SEC = process.env.DISABLE_SEC || false
 
 let RESOLVER_CACHE = {}
 
@@ -49,10 +37,12 @@ async function resolve(url, config) {
     let type = url.split("/")[2]
     let method = url.split("/")[3]
     let outUrl = ""
-        // check if exists first
+    let ispublic = false
+    // check if exists first
     let serviceList = config.services
     let hasMethod = serviceList.hasOwnProperty(service) && serviceList[service].hasOwnProperty(type) && serviceList[service][type].hasOwnProperty(method);
     if (hasMethod) {
+        ispublic = serviceList[service]["_public"] || false
         outUrl += serviceList[service]["_base"] || ""
         if (!(typeof serviceList[service][type][method] === 'string' || serviceList[service][type][method] instanceof String)) {
             outUrl += await useResolver(method, serviceList[service][type][method])
@@ -63,108 +53,130 @@ async function resolve(url, config) {
         // if not exists, go to base
         outUrl = config["root"] + "/" + url.split("/").slice(1).join("/")
     }
-    return outUrl
+    return {
+        url: outUrl,
+        public: ispublic
+    }
 }
 
 // in cases where a resolver, rather than a string, is used for a method, use this to lookup w/o cache
 async function useResolver(method, rule) {
-    var rule_check = JSON.stringify([method,rule])
-    if(RESOLVER_CACHE.hasOwnProperty(rule_check)){
-      return RESOLVER_CACHE[rule_check]
+    var rule_check = JSON.stringify([method, rule])
+    if (RESOLVER_CACHE.hasOwnProperty(rule_check)) {
+        return RESOLVER_CACHE[rule_check]
     } else {
-      var INvar = method;
-      var beforeVar = "";
-      var afterVar = "";
-      // get input variable
-      if (rule.before) {
-          if (!(typeof rule.before === 'string' || rule.before instanceof String)) {
-              // for unity, treat as list
-              rule.before = [rule.before]
-          }
-          let activeKeys = rule.before.filter(x => INvar.indexOf(x) >= 0)
-          INvar = INvar.split(activeKeys[0])[0]
-              // keep the rest of the things surrounding the invar
-          beforeVar = method.split(activeKeys[0]).slice(1).join(activeKeys[0])
-      }
-      if (rule.after) {
-          if (!(typeof rule.after === 'string' || rule.after instanceof String)) {
-              // for unity, treat as list
-              rule.after = [rule.after]
-          }
-          let activeKeys = rule.after.filter(x => INvar.indexOf(x) >= 0)
-          INvar = INvar.split(activeKeys[0])[1]
-              // keep the rest of the things surrounding the invar
-          afterVar = method.split(activeKeys[0]).slice(0, -1).join(activeKeys[0])
-      }
-      // TODO ask cache for this invar
-      var OUTvar = await rp({
-          uri: rule.url.split("{IN}").join(INvar),
-          json: true
-      })
-      if (rule.field) {
-          OUTvar = OUTvar[rule.field]
-      }
-      // substitute all OUT and IN
-      var result = rule.destination.split("{OUT}").join(beforeVar + OUTvar + afterVar).split("{IN}").join(INvar);
-      RESOLVER_CACHE[rule_check] = result
-      return result
+        var INvar = method;
+        var beforeVar = "";
+        var afterVar = "";
+        // get input variable
+        if (rule.before) {
+            if (!(typeof rule.before === 'string' || rule.before instanceof String)) {
+                // for unity, treat as list
+                rule.before = [rule.before]
+            }
+            let activeKeys = rule.before.filter(x => INvar.indexOf(x) >= 0)
+            INvar = INvar.split(activeKeys[0])[0]
+            // keep the rest of the things surrounding the invar
+            beforeVar = method.split(activeKeys[0]).slice(1).join(activeKeys[0])
+        }
+        if (rule.after) {
+            if (!(typeof rule.after === 'string' || rule.after instanceof String)) {
+                // for unity, treat as list
+                rule.after = [rule.after]
+            }
+            let activeKeys = rule.after.filter(x => INvar.indexOf(x) >= 0)
+            INvar = INvar.split(activeKeys[0])[1]
+            // keep the rest of the things surrounding the invar
+            afterVar = method.split(activeKeys[0]).slice(0, -1).join(activeKeys[0])
+        }
+        // TODO ask cache for this invar
+        var OUTvar = await rp({
+            uri: rule.url.split("{IN}").join(INvar),
+            json: true
+        })
+        if (rule.field) {
+            OUTvar = OUTvar[rule.field]
+        }
+        // substitute all OUT and IN
+        var result = rule.destination.split("{OUT}").join(beforeVar + OUTvar + afterVar).split("{IN}").join(INvar);
+        RESOLVER_CACHE[rule_check] = result
+        return result
     }
 
 }
 
-// User/security routes
-
-
+const getToken = function(req) {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') { // Authorization: Bearer g1jipjgi1ifjioj
+        // Handle token presented as a Bearer token in the Authorization header
+        return req.headers.authorization.split(' ')[1];
+    } else if (req.query && req.query.token) {
+        // Handle token presented as URI param
+        return req.query.token;
+    } else if (req.cookies && req.cookies.token) {
+        // Handle token presented as a cookie parameter
+        return req.cookies.token;
+    }
+}
 
 app.use("/", function(req, res) {
-        // check for authentication specific
-        if (url.split("/")[1]=="_auth"){
-          if (url.split("/")[2]=="login"){
-            passport.authenticate('openidconnect'));
-          }
-          if (url.split("/")[2]=="callback"){
-            passport.authenticate('openidconnect', { failureRedirect: '/_auth/login' }),
-              function(req, res) {
-                if(req.user){
-                  res.statys(200).send(req.user)
+    // normal behavior
+    let resolveProm = resolve(req.originalUrl, config)
+    resolveProm.then(x => {
+        console.log(x)
+        let verified = false;
+        let jwt_err = "Uninitialized JWT Error";
+        if (DISABLE_SEC) {
+            verified = true
+            let jwt_err = "Security Disabled";
+        } else {
+            jwt.verify(getToken(req), SECRET, function(err, decoded) {
+                if (err) {
+                    console.log(err)
+                    jwt_err = err
                 } else {
-                  res.status(400).send(error)
+                    console.log(decoded)
+                    verified = true
                 }
             });
-          }
         }
-        // normal behavior
-        let urlProm = resolve(req.originalUrl, config)
-        urlProm.then(url => {
-          console.log(url)
-          options = {
-              uri: url,
-              encoding: null,
-              method: req.method,
-              resolveWithFullResponse: true
-          }
-          if (req.method != "GET") {
-              options.body = req.body;
-              options.json = true;
-          }
-          var resource = rp(options);
-          resource.then(response => {
-              res.set(response.headers)
-              res.header("Access-Control-Allow-Origin", "*");
-              res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-              res.send(response.body)
-          });
-          resource.catch(e => {
-              res.header("Access-Control-Allow-Origin", "*");
-              res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-              res.status(500).send(e)
-          })
-        })
-        urlProm.catch(e => {
-          res.header("Access-Control-Allow-Origin", "*");
-          res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-          res.status(500).send(e)
-        })
+        if (x.public || verified) {
+            options = {
+                uri: x.url,
+                encoding: null,
+                method: req.method,
+                resolveWithFullResponse: true
+            }
+            if (req.method != "GET") {
+                options.body = req.body;
+                options.json = true;
+            }
+            var resource = rp(options);
+            resource.then(response => {
+                res.set(response.headers)
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                console.log("a")
+                res.send(response.body)
+            });
+            resource.catch(e => {
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                console.log("b")
+                res.status(500).send(e)
+            })
+        } else {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            console.log("c")
+            res.status(401).send(jwt_err)
+        }
     })
+    resolveProm.catch(e => {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        console.log(e)
+        res.status(500).send(e)
+    })
+})
 
 app.listen(4010, () => console.log('listening on 4010'))
