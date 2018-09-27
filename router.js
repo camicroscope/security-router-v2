@@ -5,25 +5,28 @@ const app = express();
 const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
 const passport = require("passport")
+
 app.use(passport.initialize());
+app.use(express.json());
 
 const User = require("./User.js")
 
-var Strategy = require('passport-openid').Strategy;
+var Strategy = require('passport-openidconnect').Strategy;
 
 passport.use(new Strategy({
-    returnURL: 'http://localhost:3000/auth/openid/return',
-    realm: 'http://localhost:3000/'
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    authorizationURL: 'https://login0.myauth0.com/i/oauth2/authorize',
+    tokenURL: 'https://login0.myauth0.com/oauth/token',
+    callbackURL: 'http://localhost:3000/callback'
   },
-  function(identifier, done) {
-    User.findByOpenID({ openId: identifier }, function (err, user) {
-      return done(err, user);
-    });
-  }
+  function(token, tokenSecret, profile, cb) {
+    return cb(null, profile);
+}));
 
 let RESOLVER_CACHE = {}
 
-app.use(express.json());
+
 
 let loading_config
 try {
@@ -114,6 +117,23 @@ async function useResolver(method, rule) {
 
 
 app.use("/", function(req, res) {
+        // check for authentication specific
+        if (url.split("/")[1]=="_auth"){
+          if (url.split("/")[2]=="login"){
+            passport.authenticate('openidconnect'));
+          }
+          if (url.split("/")[2]=="callback"){
+            passport.authenticate('openidconnect', { failureRedirect: '/_auth/login' }),
+              function(req, res) {
+                if(req.user){
+                  res.statys(200).send(req.user)
+                } else {
+                  res.status(400).send(error)
+                }
+            });
+          }
+        }
+        // normal behavior
         let urlProm = resolve(req.originalUrl, config)
         urlProm.then(url => {
           console.log(url)
