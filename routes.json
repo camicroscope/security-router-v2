@@ -1,5 +1,5 @@
 {
-  "root":"http://ca-viewer:80/",
+  "root":"http://ca-front:80/",
   "services":{
     "data":{
       "_base": "http://ca-data:9099/services/caMicroscope",
