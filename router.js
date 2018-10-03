@@ -35,7 +35,7 @@ const config = loading_config;
 async function resolve(url, config) {
     let service = url.split("/")[1]
     let type = url.split("/")[2]
-    let method = url.split("/")[3]
+    let method = url.split("/")[3].split("?")[0]
     let outUrl = ""
     let ispublic = false
     // check if exists first
@@ -48,6 +48,14 @@ async function resolve(url, config) {
             outUrl += await useResolver(method, serviceList[service][type][method])
         } else {
             outUrl += serviceList[service][type][method] || ""
+        }
+        // handle lingering method url params
+        if (url.split("/")[3].split("?").length >= 2){
+          outUrl += "?" + url.split("/")[3].split("?")[1]
+        }
+        // handle any leftover route passed
+        if (url.split("/").length > 4){
+          outUrl += "/" + url.split("/").slice(4).join("/")
         }
     } else {
         // if not exists, go to base
