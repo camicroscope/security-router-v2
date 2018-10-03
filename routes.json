@@ -4,11 +4,11 @@
     "data":{
       "_base": "http://ca-data:9099/services/caMicroscope",
       "Mark": {
-        "get":"/mark/query/get",
-        "find":"/mark/query/find",
-        "mutli":"/mark/delete/multiFind",
-        "post":"/mark/submit/json",
-        "delete":"/mark/delete/deleteMark"
+        "get":"/Mark/query/get",
+        "find":"/Mark/query/find",
+        "mutli":"/Mark/delete/multiFind",
+        "post":"/Mark/submit/json",
+        "delete":"/Mark/delete/deleteMark"
       },
       "Overlay": {
         "get":"/Overlay/query/get",
