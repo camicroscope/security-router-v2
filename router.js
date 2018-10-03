@@ -73,10 +73,6 @@ async function resolve(url, config) {
 
 // in cases where a resolver, rather than a string, is used for a method, use this to lookup w/o cache
 async function useResolver(method, rule) {
-    var rule_check = JSON.stringify([method, rule])
-    if (RESOLVER_CACHE.hasOwnProperty(rule_check)) {
-        return RESOLVER_CACHE[rule_check]
-    } else {
         var INvar = method;
         var beforeVar = "";
         var afterVar = "";
@@ -89,24 +85,34 @@ async function useResolver(method, rule) {
             let activeKeys = rule.before.filter(x => INvar.indexOf(x) >= 0)
             INvar = INvar.split(activeKeys[0])[0]
             // keep the rest of the things surrounding the invar
-            beforeVar = method.split(activeKeys[0]).slice(1).join(activeKeys[0])
+            beforeVar = method.slice(method.indexOf(activeKeys[0]))
             console.log(beforeVar)
         }
         if (rule.after) {
-            if (!(typeof rule.after === 'string' || rule.after instanceof String)) {
+            if ((typeof rule.after === 'string' || rule.after instanceof String)) {
                 // for unity, treat as list
                 rule.after = [rule.after]
             }
             let activeKeys = rule.after.filter(x => INvar.indexOf(x) >= 0)
             INvar = INvar.split(activeKeys[0])[1]
             // keep the rest of the things surrounding the invar
-            afterVar = method.split(activeKeys[0]).slice(0, -1).join(activeKeys[0])
+            afterVar = method.slice(0,method.lastIndexOf(activeKeys[0]+activeKeys[0].length))
         }
-        // TODO ask cache for this invar
-        var OUTvar = await rp({
-            uri: rule.url.split("{IN}").join(INvar),
-            json: true
-        })
+        var OUTvar= {}
+        OUTvar[rule.field] = "OUTVAR"
+        var rule_check = JSON.stringify([INvar, rule])
+        if (RESOLVER_CACHE.hasOwnProperty(rule_check)) {
+            OUTvar = RESOLVER_CACHE[rule_check]
+            console.log("Got from cache: from: " + rule_check + " to : " + OUTvar)
+        } else {
+          /**
+          var OUTvar = await rp({
+              uri: rule.url.split("{IN}").join(INvar),
+              json: true
+          })
+          **/
+          RESOLVER_CACHE[rule_check] = OUTvar
+        }
         // case where list with one item
         if (OUTvar.length == 1){
           OUTvar=OUTvar[0]
@@ -115,10 +121,9 @@ async function useResolver(method, rule) {
             OUTvar = OUTvar[rule.field]
         }
         // substitute all OUT and IN
-        var result = rule.destination.split("{OUT}").join(beforeVar + OUTvar + afterVar).split("{IN}").join(INvar);
-        RESOLVER_CACHE[rule_check] = result
+        var result = rule.destination.split("{OUT}").join( afterVar + OUTvar + beforeVar ).split("{IN}").join(INvar);
+
         return result
-    }
 
 }
 
