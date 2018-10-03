@@ -181,12 +181,7 @@ app.use("/", function(req, res) {
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 let statusCode = e.statusCode || 500
                 let body =  e.data
-                console.log(e.response.body.toString())
-                try{
-                  body = Buffer.from(body).toString()
-                } catch(e){
-                  body = e
-                }
+                body = e.response.body.toString()
                 res.status(statusCode).send(e)
             })
         } else {
