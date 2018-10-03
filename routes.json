@@ -34,9 +34,9 @@
     "img": {
       "_base":"http://ca-iip/fcgi-bin/iipsrv.fcgi",
       "Slide":{
-        "get":{
+        "_resolver":{
           "destination":"?DeepZoom={OUT}",
-          "url":"http://ca-data:9099/services/caMicroscope/Slide/query/get?slide={IN}",
+          "url":"http://ca-data:9099/services/caMicroscope/Slide/query/get?id={IN}",
           "field":"location",
           "before":["_files", ".dzi"]
         }

@@ -8,12 +8,10 @@ var jwt = require('jsonwebtoken');
 
 app.use(express.json());
 
-const User = require("./User.js")
 var SECRET = process.env.SECRET
 var DISABLE_SEC = process.env.DISABLE_SEC || false
 
 let RESOLVER_CACHE = {}
-
 
 
 let loading_config
@@ -44,11 +42,12 @@ async function resolve(url, config) {
     // check if exists first
     let serviceList = config.services
     let hasMethod = serviceList.hasOwnProperty(service) && serviceList[service].hasOwnProperty(type) && serviceList[service][type].hasOwnProperty(method);
-    if (hasMethod) {
+    let isResolver = serviceList.hasOwnProperty(service) && serviceList[service].hasOwnProperty(type) && serviceList[service][type].hasOwnProperty("_resolver");
+    if (hasMethod || isResolver) {
         ispublic = serviceList[service]["_public"] || false
         outUrl += serviceList[service]["_base"] || ""
-        if (!(typeof serviceList[service][type][method] === 'string' || serviceList[service][type][method] instanceof String)) {
-            outUrl += await useResolver(method, serviceList[service][type][method])
+        if (isResolver) {
+            outUrl += await useResolver(method, serviceList[service][type]["_resolver"])
         } else {
             outUrl += serviceList[service][type][method] || ""
         }
@@ -190,4 +189,4 @@ app.use("/", function(req, res) {
     })
 })
 
-app.listen(4010, () => console.log('listening on 4010'))
+app.listen(4011, () => console.log('listening on 4010'))

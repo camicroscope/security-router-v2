@@ -19,14 +19,9 @@ As of now, two settings may be changed with enviornment variables:
 SECRET - the secret for JWT checks
 DISABLE_SEC - set to true to skip all auth checks regardless of if public is set. Designed for cert/testing.
 
-### Variables
-{IN}
-{OUT}
-{USER}
-{NOW}
-
 ### Resolvers
-source - the pattern to ger {IN} from
+Resolvers are set by setting the "method" level to "\_resolver"-- the actual input to the method is then stored as {IN}
+
 destination - what to use as the method url, after {OUT} substitution,
 url - the url to check
 field - the field in the response to assign to {OUT}
