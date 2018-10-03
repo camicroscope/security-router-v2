@@ -182,7 +182,7 @@ app.use("/", function(req, res) {
                 let statusCode = e.statusCode || 500
                 let body =  e.data
                 body = e.response.body.toString()
-                res.status(statusCode).send(e)
+                res.status(statusCode).send(body)
             })
         } else {
             res.header("Access-Control-Allow-Origin", "*");
