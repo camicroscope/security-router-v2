@@ -11,6 +11,8 @@ app.use(express.json());
 var SECRET = process.env.SECRET
 var DISABLE_SEC = process.env.DISABLE_SEC || false
 
+var PORT = process.env.PORT || 4010
+
 let RESOLVER_CACHE = {}
 
 
@@ -80,7 +82,7 @@ async function useResolver(method, rule) {
         var afterVar = "";
         // get input variable
         if (rule.before) {
-            if (!(typeof rule.before === 'string' || rule.before instanceof String)) {
+            if ((typeof rule.before === 'string' || rule.before instanceof String)) {
                 // for unity, treat as list
                 rule.before = [rule.before]
             }
@@ -88,6 +90,7 @@ async function useResolver(method, rule) {
             INvar = INvar.split(activeKeys[0])[0]
             // keep the rest of the things surrounding the invar
             beforeVar = method.split(activeKeys[0]).slice(1).join(activeKeys[0])
+            console.log(beforeVar)
         }
         if (rule.after) {
             if (!(typeof rule.after === 'string' || rule.after instanceof String)) {
@@ -169,28 +172,24 @@ app.use("/", function(req, res) {
                 res.set(response.headers)
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                console.log("a")
                 res.send(response.body)
             });
             resource.catch(e => {
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                console.log("b")
                 res.status(500).send(e)
             })
         } else {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            console.log("c")
             res.status(401).send(jwt_err)
         }
     })
     resolveProm.catch(e => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        console.log(e)
         res.status(500).send(e)
     })
 })
 
-app.listen(4010, () => console.log('listening on 4010'))
+app.listen(PORT, () => console.log('listening on ' + PORT))
