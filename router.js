@@ -35,7 +35,10 @@ const config = loading_config;
 async function resolve(url, config) {
     let service = url.split("/")[1]
     let type = url.split("/")[2]
-    let method = url.split("/")[3].split("?")[0]
+    let method = ""
+    if (url.split("/")[3]){
+      method = url.split("/")[3].split("?")[0]
+    }
     let outUrl = ""
     let ispublic = false
     // check if exists first
