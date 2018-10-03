@@ -98,19 +98,16 @@ async function useResolver(method, rule) {
             // keep the rest of the things surrounding the invar
             afterVar = method.slice(0,method.lastIndexOf(activeKeys[0]+activeKeys[0].length))
         }
-        var OUTvar= {}
-        OUTvar[rule.field] = "OUTVAR"
+        var OUTvar = ""
         var rule_check = JSON.stringify([INvar, rule])
         if (RESOLVER_CACHE.hasOwnProperty(rule_check)) {
             OUTvar = RESOLVER_CACHE[rule_check]
             console.log("Got from cache: from: " + rule_check + " to : " + OUTvar)
         } else {
-          /**
-          var OUTvar = await rp({
+            OUTvar = await rp({
               uri: rule.url.split("{IN}").join(INvar),
               json: true
           })
-          **/
           RESOLVER_CACHE[rule_check] = OUTvar
         }
         // case where list with one item
