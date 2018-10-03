@@ -104,6 +104,10 @@ async function useResolver(method, rule) {
             uri: rule.url.split("{IN}").join(INvar),
             json: true
         })
+        // case where list with one item
+        if (OUTvar.length == 1){
+          OUTvar=OUTvar[0]
+        }
         if (rule.field) {
             OUTvar = OUTvar[rule.field]
         }
