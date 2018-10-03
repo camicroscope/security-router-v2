@@ -179,7 +179,15 @@ app.use("/", function(req, res) {
             resource.catch(e => {
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-                res.status(500).send(e)
+                let statusCode = e.statusCode || 500
+                let body =  e.data
+                console.log(e.response.body.toString())
+                try{
+                  body = Buffer.from(body).toString()
+                } catch(e){
+                  body = e
+                }
+                res.status(statusCode).send(e)
             })
         } else {
             res.header("Access-Control-Allow-Origin", "*");
