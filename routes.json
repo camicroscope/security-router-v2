@@ -6,7 +6,7 @@
       "Mark": {
         "get":"/Mark/query/get",
         "find":"/Mark/query/find",
-        "mutli":"/Mark/query/multiFind",
+        "multi":"/Mark/query/multiFind",
         "post":"/Mark/submit/json",
         "delete":"/Mark/delete/deleteMark"
       },
