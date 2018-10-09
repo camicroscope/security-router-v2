@@ -41,6 +41,13 @@
           "before":["_files", ".dzi"]
         }
       }
+    },
+    "load": {
+      "_base": "http://ca-load:4000",
+      "Slide": {
+        "upload":"/upload",
+        "info":"/data/one"
+      }
     }
   },
   "keycheck": {
