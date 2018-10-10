@@ -6,6 +6,7 @@ const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
 var jwt = require('jsonwebtoken');
 
+// handle non-json raw body for post
 app.use(function(req, res, next) {
     var data = '';
     req.setEncoding('utf8');
