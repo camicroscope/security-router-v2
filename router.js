@@ -202,8 +202,7 @@ app.use("/", function(req, res) {
                 res.header("Access-Control-Allow-Origin", "*");
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 let statusCode = e.statusCode || 500
-                let body =  e.data
-                body = JSON.stringify(e.response.body)
+                let body =  e.error.toString()
                 res.status(statusCode).send(body)
             })
         } else {
