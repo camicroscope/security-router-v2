@@ -6,6 +6,18 @@ const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
 var jwt = require('jsonwebtoken');
 
+app.use(function(req, res, next) {
+    var data = '';
+    req.setEncoding('utf8');
+    req.on('data', function(chunk) {
+        data += chunk;
+    });
+    req.on('end', function() {
+        req.rawBody = data;
+        next();
+    });
+});
+
 app.use(express.json());
 
 var SECRET = process.env.SECRET
@@ -166,7 +178,7 @@ app.use("/", function(req, res) {
                 resolveWithFullResponse: true
             }
             if (req.method != "GET") {
-                options.body = req.body;
+                options.body = req.body || req.rawBody;
                 // is this a json?
                 if (req.is('application/json')){
                   options.json = true;
@@ -185,7 +197,7 @@ app.use("/", function(req, res) {
                 let statusCode = e.statusCode || 500
                 let body =  e.data
                 body = JSON.stingify(e.response.body)
-                res.status(statusCode).send(e)
+                res.status(statusCode).send(body)
             })
         } else {
             res.header("Access-Control-Allow-Origin", "*");
