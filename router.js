@@ -184,7 +184,7 @@ app.use("/", function(req, res) {
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 let statusCode = e.statusCode || 500
                 let body =  e.data
-                body = e.response.body
+                body = JSON.stingify(e.response.body)
                 res.status(statusCode).send(body)
             })
         } else {
