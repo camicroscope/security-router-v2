@@ -179,10 +179,14 @@ app.use("/", function(req, res) {
                 resolveWithFullResponse: true
             }
             if (req.method != "GET") {
-                options.body = req.body || req.rawBody;
                 // is this a json?
                 if (req.is('application/json')){
                   options.json = true;
+                  options.body = req.body;
+                } else {
+                  // raw body for non json posts
+                  options.json = false;
+                  options.body = req.rawBody;
                 }
             }
             var resource = rp(options);
