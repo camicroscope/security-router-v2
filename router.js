@@ -172,11 +172,13 @@ app.use("/", function(req, res) {
             });
         }
         if (x.public || verified) {
+            console.log(req.headers)
             options = {
                 uri: x.url,
                 encoding: null,
                 method: req.method,
-                resolveWithFullResponse: true
+                resolveWithFullResponse: true,
+                headers: req.headers
             }
             if (req.method != "GET") {
                 // is this a json?
@@ -201,7 +203,7 @@ app.use("/", function(req, res) {
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 let statusCode = e.statusCode || 500
                 let body =  e.data
-                body = JSON.stingify(e.response.body)
+                body = JSON.stringify(e.response.body)
                 res.status(statusCode).send(body)
             })
         } else {
