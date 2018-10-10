@@ -167,7 +167,10 @@ app.use("/", function(req, res) {
             }
             if (req.method != "GET") {
                 options.body = req.body;
-                options.json = true;
+                // is this a json?
+                if (req.is('application/json')){
+                  options.json = true;
+                }
             }
             var resource = rp(options);
             resource.then(response => {
@@ -181,8 +184,8 @@ app.use("/", function(req, res) {
                 res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 let statusCode = e.statusCode || 500
                 let body =  e.data
-                body = e.response.body.toString()
-                res.status(statusCode).send(e)
+                body = e.response.body
+                res.status(statusCode).send(body)
             })
         } else {
             res.header("Access-Control-Allow-Origin", "*");
