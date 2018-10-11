@@ -7,7 +7,7 @@ const getUrlParam = require("./getUrlParam")
 var jwt = require('jsonwebtoken');
 
 var SECRET = process.env.SECRET
-var DISABLE_SEC = process.env.DISABLE_SEC || true
+var DISABLE_SEC = process.env.DISABLE_SEC || false
 
 var PORT = process.env.PORT || 4010
 
