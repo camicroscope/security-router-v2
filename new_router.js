@@ -5,6 +5,8 @@ const app = express();
 const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
 var jwt = require('jsonwebtoken');
+const HttpProxy = require('http-proxy');
+var proxy = require('express-http-proxy');
 
 var SECRET = process.env.SECRET
 var DISABLE_SEC = process.env.DISABLE_SEC || false
@@ -199,40 +201,15 @@ app.use(function(req, res, next){
     }
 })
 
-// handle the routes themselves
-app.use("/", function(req, res) {
-    let options = {
-        uri: req.new_url,
-        encoding: null,
-        method: req.method,
-        resolveWithFullResponse: true,
-        headers: req.headers
-    }
-    if (req.method != "GET") {
-        // is this a json?
-        if (req.is('application/json')){
-          options.json = true;
-          options.body = req.body;
-        } else {
-          // raw body for non json posts
-          options.json = false;
-          options.body = req.rawBody;
+// handle the proxy routes themselves
+app.use("/", function(req, res, next) {
+    console.log(req.new_url)
+    proxy(req.new_url,{
+        userResDecorator: function(proxyRes, proxyResData, userReq, userRes){
+            console.log(userReq)
+            return proxyResData
         }
-    }
-    var resource = rp(options);
-        resource.then(response => {
-            res.set(response.headers)
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            res.send(response.body)
-        });
-        resource.catch(e => {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            let statusCode = e.statusCode || 500
-            let body =  e.error.toString()
-            res.status(statusCode).send(body)
-        })
+    })(req, res, next)
 })
 
 app.listen(PORT, () => console.log('listening on ' + PORT))
