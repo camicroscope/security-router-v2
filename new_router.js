@@ -5,8 +5,7 @@ const app = express();
 const fs = require("fs")
 const getUrlParam = require("./getUrlParam")
 var jwt = require('jsonwebtoken');
-const HttpProxy = require('http-proxy');
-var proxy = require('express-http-proxy');
+var proxy = require('http-proxy-middleware');
 
 var SECRET = process.env.SECRET
 var DISABLE_SEC = process.env.DISABLE_SEC || false
@@ -39,7 +38,7 @@ const getToken = function(req) {
 // handle non-json raw body for post
 app.use(function(req, res, next) {
     var data = '';
-    req.setEncoding('utf8');
+    req.setEncoding(null);
     req.on('data', function(chunk) {
         data += chunk;
     });
@@ -142,9 +141,6 @@ async function useResolver(method, rule) {
 
 }
 
-// handle json
-app.use(express.json());
-
 // handle jwt
 app.use(function(req, res, next){
     req.verified = false;
@@ -203,14 +199,20 @@ app.use(function(req, res, next){
 
 // handle the proxy routes themselves
 app.use("/", function(req, res, next) {
-    console.log(req.new_url)
-    proxy(req.new_url,{
-        proxyReqPathResolver: function(req) { return "" }
-        userResDecorator: function(proxyRes, proxyResData, userReq, userRes){
-            //console.log(userReq)
-            return proxyResData
+    proxy({
+      onError(err, req, res) { res.status(500).send(err)},
+      changeOrigin: true,
+      target:req.new_url.split("/").slice(0,3).join("/"),
+      pathRewrite: function (path, req) {return req.new_url.split("/").slice(3).join("/") },
+      onProxyReq: function (proxyReq, req, res){
+        if (req.method == "POST"){
+          console.log(req.rawBody.length)
+          proxyReq.write( req.rawBody );
+          proxyReq.end();
         }
+      }
     })(req, res, next)
 })
+
 
 app.listen(PORT, () => console.log('listening on ' + PORT))
