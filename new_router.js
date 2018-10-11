@@ -205,8 +205,9 @@ app.use(function(req, res, next){
 app.use("/", function(req, res, next) {
     console.log(req.new_url)
     proxy(req.new_url,{
+        proxyReqPathResolver: function(req) { return "" }
         userResDecorator: function(proxyRes, proxyResData, userReq, userRes){
-            console.log(userReq)
+            //console.log(userReq)
             return proxyResData
         }
     })(req, res, next)
