@@ -44,8 +44,12 @@
     },
     "load": {
       "_base": "http://ca-load:4000",
-      "Slide": {
-        "upload":"/upload",
+      "Upload": {
+        "start":"/upload/start",
+        "continue":"/upload/continue",
+        "finish":"/upload/finish"
+      },
+      "Slide":{
         "info":"/data/one"
       }
     }
