@@ -200,7 +200,7 @@ app.use(function(req, res, next){
 // handle the proxy routes themselves
 app.use("/", function(req, res, next) {
     proxy({
-      onError(err, req, res) { res.status(500).send(err)},
+      onError(err, req, res) { console.warn(err)},
       changeOrigin: true,
       target:req.new_url.split("/").slice(0,3).join("/"),
       pathRewrite: function (path, req) {return req.new_url.split("/").slice(3).join("/") },
