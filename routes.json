@@ -7,6 +7,7 @@
         "get":"/Mark/query/get",
         "find":"/Mark/query/find",
         "multi":"/Mark/query/multiFind",
+        "types":"/Mark/query/findTypes",
         "post":"/Mark/submit/json",
         "delete":"/Mark/delete/deleteMark"
       },
