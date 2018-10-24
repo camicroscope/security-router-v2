@@ -164,6 +164,33 @@ app.use(function(req, res, next){
         });
     }
 })
+/**
+// handle auth given jwt decoded
+app.use(function(req, res, next){
+    if (DISABLE_SEC || !config.hasOwnProperty("auth")){
+      // user managment not set up, all is ok
+      req.userid = "UNSPECIFIED"
+      req.keychain = []
+      next()
+    } else {
+      usercheck = rp({
+        uri: config.auth.destination.split("{USER}").join(req.jwt_data[config.auth.source]),
+        json: true
+      })
+      usercheck.then(x=>{
+        // TODO check if the response looks ok
+        // TODO handle if this config is a dot item
+        req.userid = req.jwt_data[config.auth.source]
+        if config.auth.hasOwnProperty("keychain"){
+          req.keychain = x[config.auth.keychain]
+        } else {
+          req.keychain = []
+        }
+        next()
+      })
+    }
+})
+**/
 
 // handle resolver
 app.use(function(req, res, next){
