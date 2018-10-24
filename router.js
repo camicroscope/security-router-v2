@@ -182,7 +182,7 @@ app.use(function(req, res, next){
         // TODO handle if this config is a dot item
 
         req.userid = req.jwt_data[config.auth.source]
-        if config.auth.hasOwnProperty("keychain"){
+        if (config.auth.hasOwnProperty("keychain")){
           req.keychain = x[config.auth.keychain]
         } else {
           req.keychain = []
