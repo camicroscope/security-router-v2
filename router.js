@@ -164,7 +164,7 @@ app.use(function(req, res, next){
         });
     }
 })
-/**
+
 // handle auth given jwt decoded
 app.use(function(req, res, next){
     if (DISABLE_SEC || !config.hasOwnProperty("auth")){
@@ -195,7 +195,6 @@ app.use(function(req, res, next){
       })
     }
 })
-**/
 
 
 // handle resolver
