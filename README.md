@@ -11,6 +11,16 @@ Under services, should be each top level service. Each service has a \_base for 
 
 Of course, the nomenclature chosen may not match configuration, but the important thing to note is that requests, outside of those directed at the root service, should be in the form https://<url base>/service/resource/method.
 
+### User Managment
+
+(IN PROGRESS -- REMOVE THIS WARNING WHEN TESTED)
+This tool does not directly keep track of users, but it provides a framework to integrate with a service which does.
+In routes.json, add an "auth" section with the following configuration options.
+
+
+source - The field in the decoded JWT to set to {USER}
+destination - The url to call to determine if the user has permission, and get the keychain if applicable.
+keychain - The keys the user has, if applicable. See the Keycheck section of this document.
 
 ### enviornment variables
 
@@ -31,5 +41,4 @@ after - a string or list of strings to get the variable after; if multiple match
 ### Keycheck
 !!!! Keycheck is not yet implemented, but part of a potential concept for later
 
-Checks if a named field is present in both the users permissions and the document
-If passIfMissing is truthy, it will return a document with no such field
+Checks if a named field is present in both the users keychain and the document; for document/resource level access control. Can be used with resolvers.
