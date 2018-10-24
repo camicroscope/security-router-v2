@@ -2,7 +2,7 @@
   "root":"http://ca-front:80/",
   "auth":{
     "source": "email",
-    "destination": "http://ca-data:9099/services/caMicroscope/Auth/query/find?user={OUT}",
+    "destination": "http://ca-data:9099/services/caMicroscope/Auth/query/find?user={USER}",
     "check": "user"
   },
   "services":{
@@ -59,10 +59,5 @@
         "info":"/data/one"
       }
     }
-  },
-  "keycheck": {
-    "field": "keys",
-    "url": "http://ca-data:9099/services/caMicroscope/Auth/query/get?user={USER}",
-    "passIfMissing": "true"
   }
 }

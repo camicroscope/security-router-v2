@@ -1,0 +1,17 @@
+sudo: required
+language: node_js
+node_js:
+   - "8"
+install:
+    - npm install
+    - npm install -g http-server
+
+before_script:
+  - rm routes.json
+  - mv test/routes.json routes.json
+  - http-server -s & # start a Web server
+  - sleep 3 # give Web server some time to bind to sockets, etc
+  - node router.js
+
+script:
+- mocha test/test_router.js

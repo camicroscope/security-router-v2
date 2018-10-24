@@ -1,0 +1,16 @@
+{
+  "root":"http://localhost:80/",
+  "auth":{
+    "source": "email",
+    "destination": "http://localhost:8000/testauth.json",
+    "check": "user"
+  },
+  "services":{
+    "test":{
+      "_base": "http://localhost:8000/",
+      "test": {
+        "test":"test.json",
+      }
+    }
+  }
+}
