@@ -21,6 +21,7 @@ In routes.json, add an "auth" section with the following configuration options.
 source - The field in the decoded JWT to set to {USER}
 destination - The url to call to determine if the user has permission, and get the keychain if applicable.
 keychain - The keys the user has, if applicable. See the Keycheck section of this document.
+check - the field to check; if the response from destination has and has a truthy value in this field, it will consider the user "ok".
 
 ### enviornment variables
 

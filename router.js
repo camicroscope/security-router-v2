@@ -168,11 +168,11 @@ app.use(function(req, res, next){
 // handle auth given jwt decoded
 app.use(function(req, res, next){
     if (DISABLE_SEC || !config.hasOwnProperty("auth")){
-      // user managment not set up, all is ok
+      // user managment not set up or security is entirely disabled
       req.userid = "UNSPECIFIED"
       req.keychain = []
       next()
-    } else {
+    } else if (req.verified) {
       usercheck = rp({
         uri: config.auth.destination.split("{USER}").join(req.jwt_data[config.auth.source]),
         json: true
@@ -180,17 +180,23 @@ app.use(function(req, res, next){
       usercheck.then(x=>{
         // TODO check if the response looks ok
         // TODO handle if this config is a dot item
+
         req.userid = req.jwt_data[config.auth.source]
         if config.auth.hasOwnProperty("keychain"){
           req.keychain = x[config.auth.keychain]
         } else {
           req.keychain = []
         }
-        next()
+        if (x.hasOwnProperty(config.auth.check) && x[config.auth.check]){
+          next()
+        } else {
+          res.status(401).send("Unauthorized User")
+        }
       })
     }
 })
 **/
+
 
 // handle resolver
 app.use(function(req, res, next){
