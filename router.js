@@ -220,7 +220,7 @@ app.use(function(req, res, next){
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         let statusCode = req.resolve_err.statusCode || 500
-        let body =  req.resolve_err.error.toString()
+        let body =  req.resolve_err.error
         res.status(statusCode).send(body)
     } else {
         if (req.user_ok || req.is_public){
