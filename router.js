@@ -190,7 +190,7 @@ app.use(function(req, res, next){
         } else {
           res.status(401).send("Unauthorized User")
         }
-      })
+      }).catch(e=>res.status(500).send(e))
     }
 })
 
