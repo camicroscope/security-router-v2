@@ -59,7 +59,7 @@
       },
       "Slide":{
         "info":"/data/one",
-        "info":"/data/thumbnail"
+        "thumb":"/data/thumbnail"
       }
     }
   }
