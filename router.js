@@ -219,10 +219,12 @@ app.use(function(req, res, next){
         res.status(statusCode).send(body)
     } else {
         if (req.verified || req.is_public){
+            console.log("line 222")
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            console.log("line 226")
             res.status(401).send(req.jwt_err.toString())
         }
     }
