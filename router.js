@@ -191,6 +191,7 @@ app.use(function(req, res, next){
           next()
         } else {
           req.user_ok = false
+          req.jwt_err= {"error": "User not authorized"}
           next()
         }
       }).catch(e=>res.status(500).send(e))

@@ -1,15 +1,22 @@
 {
-  "root":"http://localhost:80/",
+  "root":"http://localhost:8000/",
   "auth":{
-    "source": "email",
-    "destination": "http://localhost:8000/testauth.json",
+    "source": "sub",
+    "destination": "http://localhost:8000/auth{USER}.json",
     "check": "user"
   },
   "services":{
-    "test":{
+    "private":{
       "_base": "http://localhost:8000/",
       "test": {
-        "test":"test.json",
+        "test":"test.json"
+      }
+    },
+    "public":{
+      "_base": "http://localhost:8000/",
+      "_public": "true",
+      "test": {
+        "test":"test.json"
       }
     }
   }
