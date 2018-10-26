@@ -2,10 +2,7 @@
   "name": "elevate",
   "version": "1.0.0",
   "description": "Gateway which asks another server or resource for authorization ",
-  "main": "router.js",
-  "scripts": {
-    "test": "node tests.js"
-  },
+  "main": "elevate.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/caMicroscope/security.git"
@@ -18,6 +15,10 @@
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/caMicroscope/security/issues"
+  },
+  "scripts": {
+    "start": "node router.js",
+    "test": "mocha test/*.js --exit"
   },
   "homepage": "https://github.com/caMicroscope/security#readme",
   "dependencies": {
