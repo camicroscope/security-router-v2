@@ -228,7 +228,7 @@ app.use(function(req, res, next){
         } else {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            res.status(401).send(req.jwt_err.toString())
+            res.status(401).send(req.jwt_err)
         }
     }
 })
