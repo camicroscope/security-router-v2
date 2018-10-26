@@ -1,5 +1,6 @@
 {
   "root":"http://ca-front:80/",
+  "_root_public": "true",
   "services":{
     "data":{
       "_base": "http://ca-data:9099/services/caMicroscope",

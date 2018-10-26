@@ -81,6 +81,7 @@ async function resolve(url, config) {
     } else {
         // if not exists, go to base
         outUrl = config["root"] + "/" + url.split("/").slice(1).join("/")
+        ispublic = config["_root_public"] || false
     }
     return {
         url: outUrl,
@@ -217,7 +218,7 @@ app.use(function(req, res, next){
         let body =  req.resolve_err.error.toString()
         res.status(statusCode).send(body)
     } else {
-        if (req.verified){
+        if (req.verified || req.is_public){
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
