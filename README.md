@@ -13,7 +13,6 @@ Of course, the nomenclature chosen may not match configuration, but the importan
 
 ### User Managment
 
-(IN PROGRESS -- REMOVE THIS WARNING WHEN TESTED)
 This tool does not directly keep track of users, but it provides a framework to integrate with a service which does.
 In routes.json, add an "auth" section with the following configuration options.
 

@@ -1,12 +1,14 @@
 {
   "root":"http://ca-front:80/",
+  "_root_public": "true",
   "auth":{
     "source": "email",
-    "destination": "http://ca-data:9099/services/caMicroscope/Auth/query/find?user={OUT}",
+    "destination": "http://ca-data:9099/services/caMicroscope/Auth/query/get?user={USER}",
     "check": "user"
   },
   "services":{
     "data":{
+      "_public": "true",
       "_base": "http://ca-data:9099/services/caMicroscope",
       "Mark": {
         "get":"/Mark/query/get",
@@ -56,13 +58,9 @@
         "finish":"/upload/finish"
       },
       "Slide":{
-        "info":"/data/one"
+        "info":"/data/one",
+        "info":"/data/thumbnail"
       }
     }
-  },
-  "keycheck": {
-    "field": "keys",
-    "url": "http://ca-data:9099/services/caMicroscope/Auth/query/get?user={USER}",
-    "passIfMissing": "true"
   }
 }
