@@ -153,7 +153,7 @@ app.use(function(req, res, next){
     } else {
         jwt.verify(getToken(req), SECRET, function(err, decoded) {
             if (err) {
-                req.jwt_err = "err"
+                req.jwt_err = err
                 console.log("157")
                 next()
             } else {
@@ -167,8 +167,9 @@ app.use(function(req, res, next){
 
 // handle auth given jwt decoded
 app.use(function(req, res, next){
-    if (DISABLE_SEC || !config.hasOwnProperty("auth")){
+    if (DISABLE_SEC || !config.hasOwnProperty("auth") || req.is_public){
       // user managment not set up or security is entirely disabled
+      // also, don't break on public routers
       req.userid = "UNSPECIFIED"
       req.keychain = []
       next()
