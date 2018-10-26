@@ -153,7 +153,8 @@ app.use(function(req, res, next){
     } else {
         jwt.verify(getToken(req), SECRET, function(err, decoded) {
             if (err) {
-                req.jwt_err = err
+                req.jwt_err = "err"
+                console.log("157")
                 next()
             } else {
                 req.jwt_data = decoded
