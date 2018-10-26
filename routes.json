@@ -56,7 +56,8 @@
         "finish":"/upload/finish"
       },
       "Slide":{
-        "info":"/data/one"
+        "info":"/data/one",
+        "info":"/data/thumbnail"
       }
     }
   }
