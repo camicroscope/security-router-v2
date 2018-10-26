@@ -170,6 +170,7 @@ app.use(function(req, res, next){
       // user managment not set up or security is entirely disabled
       // also, don't break on public routers
       req.userid = "UNSPECIFIED"
+      req.user_ok = true
       req.keychain = []
       next()
     } else if (req.verified) {
@@ -179,20 +180,22 @@ app.use(function(req, res, next){
       })
       usercheck.then(x=>{
         // TODO handle if check config is a dot item
-        req.userid = req.jwt_data[config.auth.source]
         if (config.auth.hasOwnProperty("keychain")){
           req.keychain = x[config.auth.keychain]
         } else {
           req.keychain = []
         }
         if (x.hasOwnProperty(config.auth.check) && x[config.auth.check]){
+          req.userid = req.jwt_data[config.auth.source]
+          req.user_ok = true
           next()
         } else {
-          res.status(401).send("Unauthorized User")
+          req.user_ok = false
+          next()
         }
       }).catch(e=>res.status(500).send(e))
     } else {
-      console.log("195")
+      req.user_ok = false
       next()
     }
 })
@@ -220,7 +223,7 @@ app.use(function(req, res, next){
         let body =  req.resolve_err.error.toString()
         res.status(statusCode).send(body)
     } else {
-        if (req.verified || req.is_public){
+        if (req.user_ok || req.is_public){
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
