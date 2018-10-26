@@ -153,11 +153,9 @@ app.use(function(req, res, next){
     } else {
         jwt.verify(getToken(req), SECRET, function(err, decoded) {
             if (err) {
-                console.log(err)
                 req.jwt_err = err
                 next()
             } else {
-                console.log(decoded)
                 req.jwt_data = decoded
                 req.verified = true
                 next()
