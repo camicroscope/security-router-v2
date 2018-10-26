@@ -46,7 +46,8 @@ describe('Router User Access Checks', function () {
   })
   it('fails for private route with wrong auth user', function (done) {
     // wrong jwt should not work
-    fetch(private_url, {headers: {"Authorization": "Bearer " + wrong_user_jwt}}).then(x=>x.text()).then(x=>{
+    this.timeout(10000)
+    fetch(private_url, {headers: {"Authorization": "Bearer " + wrong_user_jwt}}).then(x=>x.json()).then(x=>{
       assert.notEqual(x.status,"OK", "Correctly did not route")
       done()
     }).catch(e=>{
@@ -58,8 +59,10 @@ describe('Router User Access Checks', function () {
     // wrong jwt should not work
     fetch(private_url, {headers: {"Authorization": "Bearer " + faked_jwt}}).then(x=>x.text()).then(x=>{
       assert.notEqual(x.status,"OK", "Correctly did not route")
+      done()
     }).catch(e=>{
       console.log(e)
+      done(e)
     })
   })
 })

@@ -194,7 +194,12 @@ app.use(function(req, res, next){
           req.jwt_err= {"error": "User not authorized"}
           next()
         }
-      }).catch(e=>res.status(500).send(e))
+      }).catch(e=>{
+        // failure to get the url is ALSO failure to auth
+        req.user_ok = false
+        req.jwt_err= {"error": "User not authorized"}
+        next()
+      })
     } else {
       req.user_ok = false
       next()
