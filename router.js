@@ -154,7 +154,6 @@ app.use(function(req, res, next){
         jwt.verify(getToken(req), SECRET, function(err, decoded) {
             if (err) {
                 req.jwt_err = err
-                console.log("157")
                 next()
             } else {
                 req.jwt_data = decoded
@@ -192,6 +191,9 @@ app.use(function(req, res, next){
           res.status(401).send("Unauthorized User")
         }
       }).catch(e=>res.status(500).send(e))
+    } else {
+      console.log("195")
+      next()
     }
 })
 
@@ -219,12 +221,10 @@ app.use(function(req, res, next){
         res.status(statusCode).send(body)
     } else {
         if (req.verified || req.is_public){
-            console.log("line 222")
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            console.log("line 226")
             res.status(401).send(req.jwt_err.toString())
         }
     }
