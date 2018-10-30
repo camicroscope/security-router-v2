@@ -41,6 +41,9 @@
     },
     "img": {
       "_base":"http://ca-iip/fcgi-bin/iipsrv.fcgi",
+      "IIP": {
+        "raw":""
+      },
       "Slide":{
         "_resolver":{
           "destination":"?DeepZoom={OUT}",
