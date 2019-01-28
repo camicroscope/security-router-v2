@@ -9,6 +9,7 @@ var proxy = require('http-proxy-middleware');
 
 var SECRET = process.env.SECRET
 var DISABLE_SEC = process.env.DISABLE_SEC || false
+var REDIRECT = process.env.REDIRECT || false
 
 var PORT = process.env.PORT || 4010
 
@@ -234,7 +235,12 @@ app.use(function(req, res, next){
         } else {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            res.status(401).send(req.jwt_err)
+            if (REDIRECT){
+                res.status(401).redirect(REDIRECT);
+            }
+            else {
+                res.status(401).send(req.jwt_err)
+            }
         }
     }
 })
