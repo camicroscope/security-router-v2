@@ -100,13 +100,17 @@ if ('logIn' === $_SESSION['request_type']) {
         $_SESSION['access_token'] = $google_client->getAccessToken();
         error_log("token: ".$_SESSION['access_token']);
     }
+    if (isset($_POST['token'])) {
+        $_SESSION['new_access_token'] = $_POST['token'];
+        error_log("token m2: ".$_SESSION['new_access_token']);
+    }
 }
 
 /************************************************
   If we have an access token, we can make
   requests, else we generate an error
  ************************************************/
-if (isset($_SESSION['access_token'])) {
+if (False and isset($_SESSION['access_token'])) {
     $google_client->setAccessToken($_SESSION['access_token']);
     $PlusService = new Google_Service_Plus($google_client);
     $me = new Google_Service_Plus_Person();
@@ -126,6 +130,24 @@ if (isset($_SESSION['access_token'])) {
     $_SESSION['email'] = $user_email;
     create_new_session($user_email, $user_name);
     exit;
+} elseif (isset($_SESSION['new_access_token'])){
+  $validation_url = "https://oauth2.googleapis.com/tokeninfo?access_token=" . $_SESSION['new_access_token'];
+  $curl = curl_init($validation_url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+  $result = curl_exec($curl);
+  $res = json_decode($result, true);
+  $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+  if ($status_code == 200){
+    $_SESSION['name'] = $res['sub'];
+    $_SESSION['email'] = $res['email'];
+    create_new_session($res['email'], $res['sub']);
+    curl_close($curl);
+    exit;
+  } else {
+      header("HTTP/1.1 401 Bad token");
+      curl_close($curl);
+      exit;
+  }
 } else {
     header("HTTP/1.1 401 Bad token");
 }
