@@ -255,7 +255,10 @@ app.use(function(req, res, next){
         let body =  req.resolve_err.error.toString()
         res.status(statusCode).send({"error":body})
     } else {
-        if (req.attr_ok && (req.user_ok || req.is_public)){
+        if (DISABLE_SEC){
+          next()
+        }
+        else if (req.attr_ok && (req.user_ok || req.is_public)){
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
