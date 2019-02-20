@@ -264,7 +264,7 @@ app.use(function(req, res, next){
                 res.status(401).redirect(REDIRECT);
             }
             else {
-                res.status(401).send(req.jwt_err)
+                res.status(401).send({"error":req.jwt_err})
             }
         }
     }
