@@ -172,7 +172,7 @@ app.use(function(req, res, next){
 
 // handle auth given jwt decoded
 app.use(function(req, res, next){
-    if (DISABLE_SEC || !config.hasOwnProperty("auth") || req.is_public){
+    if (DISABLE_SEC || !config.hasOwnProperty("auth")){
       // user managment not set up or security is entirely disabled
       // also, don't break on public routers
       req.userid = "UNSPECIFIED"
@@ -223,6 +223,8 @@ app.use(function(req, res, next){
     });
 });
 
+
+
 // attribute check
 app.use(function(req, res, next){
   if (DISABLE_SEC){
@@ -257,10 +259,11 @@ app.use(function(req, res, next){
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         let statusCode = req.resolve_err.statusCode || 500
-        let body =  req.resolve_err.error.toString()
+        let body = req.resolve_err.error.toString()
         res.status(statusCode).send({"error":body})
     } else {
-        if (req.attr_ok && (req.user_ok || req.is_public)){
+        console.log("public check", req.is_public)
+        if ((req.attr_ok && req.user_ok) || req.is_public){
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
