@@ -182,11 +182,12 @@ app.use(async function(req, res, next){
     } else if (req.verified) {
       var check_url = config.auth.elevate_url
       // no elevate url means all valid tokens are ok
-      usercheck = await rp({
+      usercheck = rp({
         uri: config.auth.elevate_url,
         headers: {authorization: "Bearer " + getToken(req)}
       })
       usercheck.then(x=>{
+        console.log(x)
         if (config.auth.elevate_ok.mode == "status"){
           // rp should only be ok where 2xx by documentation, so then means we're ok
           req.user_ok = true
@@ -197,6 +198,7 @@ app.use(async function(req, res, next){
         }
         next()
       }).catch(e=>{
+        console.log(e)
         // failure to get the url is ALSO failure to auth
         req.user_ok = false
         req.jwt_err= {"error": "User not authorized"}
@@ -227,11 +229,12 @@ app.use(function(req, res, next){
 app.use(async function(req, res, next){
   if (config.hasOwnProperty("auth") && req.attr && config.auth.elevate_url){
     var attr_suffix = config.auth.attr_suffix || "?attr="
-    usercheck = await rp({
+    usercheck = rp({
       uri: config.auth.elevate_url + attr_suffix + req.attr,
       headers: {authorization: "Bearer " + getToken(req)}
     })
     usercheck.then(x=>{
+      console.log(x)
       req.attr_ok = true
       next()
     }).catch(e=>{
