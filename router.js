@@ -72,7 +72,7 @@ async function resolve(url, config) {
             outUrl += await useResolver(method, serviceList[service][type]["_resolver"])
         } else {
             // does this have an attribute
-            attr =
+            attr = serviceList[service][type]['method'].attr
             outUrl += serviceList[service][type][method]['path'] || serviceList[service][type][method] || ""
         }
         // handle lingering method url params
@@ -225,7 +225,7 @@ app.use(function(req, res, next){
 
 // attribute check
 app.use(function(req, res, next){
-  if ( config.hasOwnProperty("auth") && req.attr && config.auth.elevate_url){
+  if (config.hasOwnProperty("auth") && req.attr && config.auth.elevate_url){
     var attr_suffix = config.auth.attr_suffix || "?attr="
     usercheck = rp({
       uri: config.auth.elevate_url + attr_suffix + req.attr,
@@ -255,7 +255,7 @@ app.use(function(req, res, next){
         let body =  req.resolve_err.error.toString()
         res.status(statusCode).send({"error":body})
     } else {
-        if (req.attr_ok && (req.user_ok || req.is_public)){
+        else if (req.attr_ok && (req.user_ok || req.is_public)){
             next()
         } else {
             res.header("Access-Control-Allow-Origin", "*");
