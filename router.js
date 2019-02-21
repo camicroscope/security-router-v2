@@ -227,7 +227,7 @@ app.use(function(req, res, next){
 app.use(async function(req, res, next){
   if (config.hasOwnProperty("auth") && req.attr && config.auth.elevate_url){
     var attr_suffix = config.auth.attr_suffix || "?attr="
-    await usercheck = rp({
+    usercheck = await rp({
       uri: config.auth.elevate_url + attr_suffix + req.attr,
       headers: {authorization: "Bearer " + getToken(req)}
     })
