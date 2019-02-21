@@ -72,7 +72,7 @@ async function resolve(url, config) {
             outUrl += await useResolver(method, serviceList[service][type]["_resolver"])
         } else {
             // does this have an attribute
-            attr = serviceList[service][type]['method'].attr
+            attr = serviceList[service][type][method].attr
             outUrl += serviceList[service][type][method]['path'] || serviceList[service][type][method] || ""
         }
         // handle lingering method url params
