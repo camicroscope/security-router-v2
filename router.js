@@ -237,10 +237,11 @@ app.use(function(req, res, next){
     }).catch(e=>{
       // failure to get the url is ALSO failure to auth
       req.attr_ok = false
-      req.jwt_err= {"error": "User not authorized for " + req.attr}
+      req.jwt_err= "User not authorized for " + req.attr
       next()
     })
   } else {
+    req.attr_ok = true
     next()
   }
 
