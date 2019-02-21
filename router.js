@@ -238,6 +238,7 @@ app.use(async function(req, res, next){
       req.attr_ok = true
       next()
     }).catch(e=>{
+      console.log(e)
       // failure to get the url is ALSO failure to auth
       req.attr_ok = false
       req.jwt_err= "User not authorized for " + req.attr
