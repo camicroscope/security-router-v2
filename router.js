@@ -171,7 +171,7 @@ app.use(function(req, res, next){
 })
 
 // handle auth given jwt decoded
-app.use(function(req, res, next){
+app.use(async function(req, res, next){
     if (DISABLE_SEC || !config.hasOwnProperty("auth") || req.is_public){
       // user managment not set up or security is entirely disabled
       // also, don't break on public routers
@@ -182,7 +182,7 @@ app.use(function(req, res, next){
     } else if (req.verified) {
       var check_url = config.auth.elevate_url
       // no elevate url means all valid tokens are ok
-      usercheck = rp({
+      usercheck = await rp({
         uri: config.auth.elevate_url,
         headers: {authorization: "Bearer " + getToken(req)}
       })
@@ -224,10 +224,10 @@ app.use(function(req, res, next){
 });
 
 // attribute check
-app.use(function(req, res, next){
+app.use(async function(req, res, next){
   if (config.hasOwnProperty("auth") && req.attr && config.auth.elevate_url){
     var attr_suffix = config.auth.attr_suffix || "?attr="
-    usercheck = rp({
+    await usercheck = rp({
       uri: config.auth.elevate_url + attr_suffix + req.attr,
       headers: {authorization: "Bearer " + getToken(req)}
     })
