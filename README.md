@@ -1,51 +1,50 @@
-# Security
-## User authentication for caMicroscope 
+# caMicroscope Security and Router Container
 
-### Enabling Authentication
-In order to sign in your users with their Google Accounts, you will need to integrate Google Sign-In into your app.
+This is intended for use with a docker deployment, or a deployment behind a reverse proxy. All requests should be directed through this service or container.
 
-If you do not wish to sign in users, please see [Disabling Authentication](https://github.com/camicroscope/Security/blob/release/README.md#disabling-authentication).
+## Configuration
 
-### Step 1. Setting up Google Sign-In
+### SSL
 
-* First, go to [Google API Console](https://console.developers.google.com/project/_/apiui/apis/library)
-* From the drop-down in the top left corner, create a new project
-* Next, select Credentials in the left side-bar, then select "OAuth Client ID" in the drop-down, and then "Configure Consent Screen"
-* Fill in your URL, etc, and click "Save"
-* Then, select "Web application", and fill in the fields
-* Finally, copy your **"client ID"** and **"client secret"**
+To enable ssl, mount the private key and certificate files to ssl/privatekey.pem and ssl/certificate.pem respectively. HTTPS mode will only be enabled if both of these files are present. 
 
+### routes.json
 
-**Ref: [Google Sign-In for Websites](https://developers.google.com/identity/sign-in/web/devconsole-project)**
+Use routes.json to expose specific routes. If no match is found, it tries to use the provided root, if specified.
+Under services, should be each top level service. Each service has a \_base for common elements of the urls (e.g. container name), \_public set to true to avoid key checks, and named resource objects, which in turn have methods. Methods either have the rest of the url, or a resolver (see "Resolvers")
 
-### Step 2. Configuration
+Of course, the nomenclature chosen may not match configuration, but the important thing to note is that requests, outside of those directed at the root service, should be in the form https://<url base>/service/resource/method.
 
-Configuration is done through a headerless ini file, Config.ini
+### User Managment
 
-| Key | Function | Default |
-| --- | --- | --- | 
-|trusted_secret| bindaas trusted secret | - |
-|disable_security| a boolean which disables user login if true | false |
-|trusted_id | the application name for bindaas | camicSignup |
-|trusted_url | the bindaas endpoint for trust |http://quip-data:9099/trustedApplication |
-|client_id | client id from google oauth (Step 1) | an unusable value|
-|client_secret | client secret from google oauth (Step 1) | an unusable value|
-|redirect_uri | the redirection to take after oauth (Step 1) | postmessage|
-|title| the title as shown on the page title and some headers | caMicroscope|
-|suffix | a tagline printed after the title on the login page | empty |
-|description | a description of the application/deployment | Look at Slides |
-| footer | designed for grant or contact information | caMicroscope – A Digital Pathology Integrative Query System; Ashish Sharma PI Emory |
-|download_link | the url linked to on the download button | https://github.com/camicroscope |
-|folder_path| the relative path of the folder | \/ |
-| dataHost | the data container’s name and port | quip-data:9099 |
-|kueHost | the jobs container’s name and port | quip-jobs:3000 |
- 
+This tool does not directly keep track of users, but it provides a framework to integrate with a service which does.
+In routes.json, add an "auth" section with the following configuration options.
 
 
-### Disabling Authentication
+elevate_url - the url to do a check against - the jwt is passed as an auth bearer token
+elevate_ok - the method to use to determine a auth check is ok
+attr_suffix - if a route attr check is to be done, what do we append to the url?
 
-To disable authentication edit `config.ini`:
+#### attributes
+A specific route can be assigned an attribute regarding its access ("attr"). If an attr is present on a route, it's routed if and only if the user check for that attr returns okay.
 
-* Set `disable_security=true`
-* You should be able to see the `/select.php` now when you launch the application from the browser.
+### enviornment variables
 
+As of now, two settings may be changed with enviornment variables:
+
+SECRET - the secret for JWT checks
+DISABLE_SEC - set to true to skip all auth checks regardless of if public is set. Designed for cert/testing.
+
+### Resolvers
+Resolvers are set by setting the "method" level to "\_resolver"-- the actual input to the method is then stored as {IN}
+
+destination - what to use as the method url, after {OUT} substitution,
+url - the url to check
+field - the field in the response to assign to {OUT}
+before - a string or list of strings to get the variable before; if multiple match, the first match is used
+after - a string or list of strings to get the variable after; if multiple match, the first match is used
+
+### Keycheck
+!!!! Keycheck is not yet implemented, but part of a potential concept for later
+
+Checks if a named field is present in both the users keychain and the document; for document/resource level access control. Can be used with resolvers.

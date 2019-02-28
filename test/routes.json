@@ -1,0 +1,24 @@
+{
+  "root":"http://localhost:8000/",
+  "auth":{
+    "elevate_url": "http://localhost:8010/check",
+    "elevate_ok":{"mode": "status"},
+    "attr_suffix": "?attr="
+  },
+  "services":{
+    "private":{
+      "_base": "http://localhost:8000/",
+      "test": {
+        "test":"test.json",
+        "super":{"path":"test.json", "attr":"super"}
+      }
+    },
+    "public":{
+      "_base": "http://localhost:8000/",
+      "_public": "true",
+      "test": {
+        "test":"test.json"
+      }
+    }
+  }
+}
