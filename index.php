@@ -21,6 +21,7 @@ if ($config['disable_security']) {
 <html class="no-js" lang=""> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
+    <meta name="google-signin-client_id" content="<?php echo $config['client_id']; ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title><?php print $config['title']; ?> Login</title>
     <meta name="description" content="">
@@ -75,14 +76,16 @@ if ($config['disable_security']) {
         <p class="lead"><?php print $config['description']; ?></p>
 
         <h4>Login/Signup with:</h4>
-            <span class="g-signin"
-                  data-scope="email"
-                  data-clientid=<?php echo $config['client_id']; ?>
-                  data-redirecturi="postmessage"
-                  data-cookiepolicy="single_host_origin"
-                  data-callback="logInCallback"
-                  data-approvalprompt="force">
-            </span>
+                  <span class="g-signin2"
+                          data-scope="email"
+                          data-client_id=<?php echo $config['client_id']; ?>
+                          data-redirecturi="postmessage"
+                          data-cookiepolicy="single_host_origin"
+                          data-callback="logInCallback"
+                          data-onsuccess="logInSuccess"
+                          data-onfailure="logInError"
+                          data-approvalprompt="force">
+                    </span>
 
     </div>
     <div class="footer">
