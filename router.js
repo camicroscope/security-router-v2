@@ -221,7 +221,8 @@ app.use(function(req, res, next){
     next()
   }
   else if (config.hasOwnProperty("auth") && req.attr && config.auth.permissions_field){
-    if (req.attr in req.jwt_data[config.auth.permissions_field]){
+    let ok_attrs = req.jwt_data[config.auth.permissions_field] || []
+    if (req.attr in ok_attrs){
       req.attr_ok = true
     } else {
       req.attr_ok = false

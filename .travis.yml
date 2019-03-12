@@ -10,7 +10,7 @@ install:
 
 before_script:
   - mv test/routes.json routes.json
-  - export SECRET="camic"
+  - export PUBKEY="camic"
   - export PORT=4010
 script:
 - cd test
