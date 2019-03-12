@@ -226,6 +226,7 @@ app.use(function(req, res, next){
     } else {
       req.attr_ok = false
     }
+    next()
   } else {
     req.attr_ok = true
     next()
