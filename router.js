@@ -19,6 +19,8 @@ var HTTPS_MODE = false
 var https_options = {}
 // HTTPS IF AVALIABLE
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 // let me use dot/array notation
 Object.byString = function(o, s) {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
