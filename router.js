@@ -265,7 +265,7 @@ app.use(function(req, res, next){
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         let statusCode = req.resolve_err.statusCode || 500
-        let body = JSON.stringify(req.resolve_err.error)
+        let body = JSON.stringify(req.resolve_err)
         res.status(statusCode).send({"error":body})
     } else {
         console.log("public check", req.is_public)
