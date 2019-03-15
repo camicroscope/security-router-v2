@@ -174,7 +174,7 @@ async function useResolver(method, rule) {
         } else {
             OUTvar = await rp({
               headers: {
-                'Authorization': req.get("Authorization")
+                'Authorization': "Bearer " + getToken(req)
               },
               uri: rule.url.split("{IN}").join(INvar),
               json: true
