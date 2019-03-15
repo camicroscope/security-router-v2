@@ -175,7 +175,7 @@ async function useResolver(method, rule) {
             OUTvar = await rp({
               headers: {
                 'Authorization': req.get("Authorization")
-              }
+              },
               uri: rule.url.split("{IN}").join(INvar),
               json: true
           })
