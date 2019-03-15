@@ -173,6 +173,9 @@ async function useResolver(method, rule) {
             console.log("Got from cache: from: " + rule_check + " to : " + OUTvar)
         } else {
             OUTvar = await rp({
+              headers: {
+                'Authorization': req.get("Authorization")
+              }
               uri: rule.url.split("{IN}").join(INvar),
               json: true
           })
@@ -262,7 +265,7 @@ app.use(function(req, res, next){
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         let statusCode = req.resolve_err.statusCode || 500
-        let body = req.resolve_err.error.toString()
+        let body = JSON.stringify(req.resolve_err.error)
         res.status(statusCode).send({"error":body})
     } else {
         console.log("public check", req.is_public)
