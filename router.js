@@ -197,6 +197,7 @@ app.use(function(req, res, next){
     if (DISABLE_SEC) {
         req.verified = true
         req.jwt_err = "Security Disabled";
+        req.user_ok = true
         next()
     } else {
         jwt.verify(getToken(req), PUBKEY, function(err, decoded) {
@@ -281,6 +282,7 @@ app.use(function(req, res, next){
 // handle the proxy routes themselves
 app.use("/", function(req, res, next) {
     proxy({
+      secure: false,
       onError(err, req, res) { console.warn(err)},
       changeOrigin: true,
       target:req.new_url.split("/").slice(0,3).join("/"),
