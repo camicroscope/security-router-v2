@@ -18,6 +18,23 @@ let RESOLVER_CACHE = {}
 var HTTPS_MODE = false
 var https_options = {}
 // HTTPS IF AVALIABLE
+
+// let me use dot/array notation
+Object.byString = function(o, s) {
+    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+    s = s.replace(/^\./, '');           // strip a leading dot
+    var a = s.split('.');
+    for (var i = 0, n = a.length; i < n; ++i) {
+        var k = a[i];
+        if (k in o) {
+            o = o[k];
+        } else {
+            return;
+        }
+    }
+    return o;
+}
+
 try {
   let ssl_pk_path = "./ssl/privatekey.pem"
   let ssl_cert_path = "./ssl/certificate.pem"
@@ -164,7 +181,7 @@ async function useResolver(method, rule) {
           OUTvar=OUTvar[0]
         }
         if (rule.field) {
-            OUTvar = OUTvar[rule.field]
+            OUTvar = Object.byString(OUTvar, rulefield)
         }
         // substitute all OUT and IN
         var result = rule.destination.split("{OUT}").join( afterVar + OUTvar + beforeVar ).split("{IN}").join(INvar);
