@@ -38,8 +38,8 @@ Object.byString = function(o, s) {
 }
 
 try {
-  let ssl_pk_path = "./ssl/privatekey.pem"
-  let ssl_cert_path = "./ssl/certificate.pem"
+  var ssl_pk_path = "./ssl/privatekey.pem"
+  var ssl_cert_path = "./ssl/certificate.pem"
   if (fs.existsSync(ssl_pk_path) && fs.existsSync(ssl_cert_path)) {
     HTTPS_MODE = true
     console.info("https mode")
@@ -51,9 +51,9 @@ try {
 }
 
 try {
-  let pubkey_path = "/keys/key.pub"
+  var pubkey_path = "/keys/key.pub"
   if(fs.existsSync(pubkey_path)){
-    var PUBKEY = fs.readFileSync(ssl_pk_path, 'utf8')
+    PUBKEY = fs.readFileSync(pubkey_path, 'utf8')
   }
 } catch (err){
   console.error(err)
