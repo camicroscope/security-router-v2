@@ -290,7 +290,7 @@ app.use("/", function(req, res, next) {
       secure: false,
       onError(err, req, res) {
         console.log(err)
-        res.status(500).send(JSON.stringify(err))
+        res.status(500).send(err)
       },
       changeOrigin: true,
       target:req.new_url.split("/").slice(0,3).join("/"),
@@ -301,6 +301,10 @@ app.use("/", function(req, res, next) {
           proxyReq.write( req.rawBody );
           proxyReq.end();
         }
+      },
+      onProxyRes: function(proxyReq, req, res){
+        console.log(JSON.stringify(req))
+        console.log(JSON.stringify(res))
       }
     })(req, res, next)
 })
