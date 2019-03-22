@@ -303,8 +303,9 @@ app.use("/", function(req, res, next) {
         }
       },
       onProxyRes: function(proxyReq, req, res){
-        console.log(JSON.stringify(req))
-        console.log(JSON.stringify(res))
+        if (proxyReq.statusCode>= 400){
+          res.status(proxyReq.statusCode).send({err: proxyReq.statusMessage})
+        }
       }
     })(req, res, next)
 })
