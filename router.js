@@ -288,7 +288,7 @@ app.use(function(req, res, next){
 app.use("/", function(req, res, next) {
     proxy({
       secure: false,
-      onError(err, req, res) { console.warn(err)},
+      onError(err, req, res) { res.send(err)},
       changeOrigin: true,
       target:req.new_url.split("/").slice(0,3).join("/"),
       pathRewrite: function (path, req) {return req.new_url.split("/").slice(3).join("/") },
