@@ -94,7 +94,7 @@ app.use(function(req, res, next) {
 });
 
 // this method takes in the original url and config to resolve which url to ask for
-async function resolve(url, config) {
+async function resolve(url, config, req) {
     let service = url.split("/")[1]
     let type = url.split("/")[2]
     let method = ""
@@ -113,7 +113,7 @@ async function resolve(url, config) {
         outUrl += serviceList[service]["_base"] || ""
         if (isResolver) {
             attr = serviceList[service][type]["_resolver"].attr
-            outUrl += await useResolver(method, serviceList[service][type]["_resolver"])
+            outUrl += await useResolver(method, serviceList[service][type]["_resolver"], req)
         } else {
             // does this have an attribute
             attr = serviceList[service][type][method].attr
@@ -140,7 +140,7 @@ async function resolve(url, config) {
 }
 
 // in cases where a resolver, rather than a string, is used for a method, use this to lookup w/o cache
-async function useResolver(method, rule) {
+async function useResolver(method, rule, req) {
         var INvar = method;
         var beforeVar = "";
         var afterVar = "";
@@ -186,7 +186,7 @@ async function useResolver(method, rule) {
           OUTvar=OUTvar[0]
         }
         if (rule.field) {
-            OUTvar = Object.byString(OUTvar, rulefield)
+            OUTvar = Object.byString(OUTvar, rule.field)
         }
         // substitute all OUT and IN
         var result = rule.destination.split("{OUT}").join( afterVar + OUTvar + beforeVar ).split("{IN}").join(INvar);
@@ -223,7 +223,7 @@ app.use(function(req, res, next){
 
 // handle resolver
 app.use(function(req, res, next){
-    resolve(req.originalUrl, config).then(x=>{
+    resolve(req.originalUrl, config, req).then(x=>{
         req.new_url = x.url
         req.is_public = x.public
         req.attr = x.attr
@@ -266,7 +266,7 @@ app.use(function(req, res, next){
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         let statusCode = req.resolve_err.statusCode || 500
         let body = JSON.stringify(req.resolve_err)
-        res.status(statusCode).send({"error":body})
+        res.status(statusCode).send({"type": "resolve error", "error":body})
     } else {
         console.log("public check", req.is_public)
         if ((req.attr_ok && req.user_ok) || req.is_public){
