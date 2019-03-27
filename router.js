@@ -7,6 +7,7 @@ const getUrlParam = require("./getUrlParam")
 var jwt = require('jsonwebtoken');
 var proxy = require('http-proxy-middleware');
 const https = require('https')
+var cookieParser = require('cookie-parser')
 
 var PUBKEY = process.env.PUBKEY
 var DISABLE_SEC = process.env.DISABLE_SEC || false
@@ -18,6 +19,9 @@ let RESOLVER_CACHE = {}
 var HTTPS_MODE = false
 var https_options = {}
 // HTTPS IF AVALIABLE
+
+// get cookies
+app.use(cookieParser())
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
