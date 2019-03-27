@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:8-alpine
 RUN npm install -g nodemon
 RUN mkdir /root/src
 COPY . /root/src
