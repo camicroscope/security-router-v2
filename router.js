@@ -279,13 +279,11 @@ app.use(function(req, res, next){
         } else {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            else {
-              var err = {}
-              err.__statusCode = 401
-              err.err = JSON.stringify(req.jwt_err)
-              err.type = "JWT error"
-              next(err)
-            }
+            var err = {}
+            err.__statusCode = 401
+            err.err = JSON.stringify(req.jwt_err)
+            err.type = "JWT error"
+            next(err)
         }
     }
 })
