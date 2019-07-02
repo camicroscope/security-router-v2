@@ -8,7 +8,7 @@ var jwt = require('jsonwebtoken');
 var proxy = require('http-proxy-middleware');
 const https = require('https')
 var cookieParser = require('cookie-parser')
-const RJSON = require('relaxed-json')
+import {toJson} from 'really-relaxed-json'
 
 var PUBKEY = process.env.PUBKEY
 var DISABLE_SEC = process.env.DISABLE_SEC || false
@@ -63,7 +63,7 @@ try {
   console.error(err)
 }
 
-let loading_config = RJSON.parse(fs.readFileSync("routes.json"));
+let loading_config = toJson(fs.readFileSync("routes.json"));
 
 const config = loading_config;
 
