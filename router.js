@@ -286,6 +286,14 @@ app.use(function(req, res, next){
 
 // handle the proxy routes themselves
 app.use("/", function(req, res, next) {
+    console.log(Object.keys(req))
+    console.log(Object.keys(res))
+    res.oldWrite = res.write
+    res.write = function(d){
+      console.log("THIS WAS CALLED --")
+      console.log(d.toString('UTF8'))
+      res.oldWrite(d)
+    }
     proxy({
       secure: false,
       onError(err, req, res) {
@@ -304,15 +312,6 @@ app.use("/", function(req, res, next) {
         }
       },
       onProxyRes: function(proxyRes, req, res){
-        console.log(Object.keys(req))
-        console.log(Object.keys(res))
-        console.log(Object.keys(proxyRes))
-        res.oldWrite = res.write
-        res.write = function(d){
-          console.log("THIS WAS CALLED --")
-          console.log(d.toString('UTF8'))
-          res.oldWrite(d)
-        }
         if (proxyRes.statusCode>= 400){
           var err = {}
           err.__statusCode = proxyRes.statusCode
