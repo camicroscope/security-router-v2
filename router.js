@@ -320,8 +320,6 @@ app.use(function(req, res, next){
 
 // handle the proxy routes themselves
 app.use("/", function(req, res, next) {
-    console.log(Object.keys(req))
-    console.log(Object.keys(res))
     res.oldWrite = res.write
     res.write = function(d){
       if (req.key_check && !DISABLE_SEC){
