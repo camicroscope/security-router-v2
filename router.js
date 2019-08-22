@@ -98,13 +98,13 @@ function keyCheck(data, req){
     if (req.key_method == "filter"){
       let list = JSON.parse(data.toString())
       // for debug, just hard code these
-      //list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
-      list.filter(x=>["a","b"].indexOf(x[req.key_check_field])>=0)
+      //list = list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
+      list = list.filter(x=>["a","b"].indexOf(x[req.key_check_field])>=0)
       return JSON.stringify(list)
     } else {
       let item = JSON.parse(data.toString())
-      //if (req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])<0){
-      if (["a","b"].indexOf(x[req.key_check_field])<0){
+      //if (req.jwt_data[req.key_check_field].indexOf(item[req.key_check_field])<0){
+      if (["a","b"].indexOf(item[req.key_check_field])<0){
         return("{}")
       } else {
         return(item)
