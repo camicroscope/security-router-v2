@@ -303,14 +303,19 @@ app.use("/", function(req, res, next) {
           proxyReq.end();
         }
       },
-      onProxyRes: function(proxyReq, req, res){
+      onProxyRes: function(proxyRes, req, res){
         console.log(Object.keys(req))
         console.log(Object.keys(res))
-        console.log(Object.keys(proxyReq))
-        if (proxyReq.statusCode>= 400){
+        console.log(Object.keys(proxyRes))
+        res.oldWrite = res.write
+        res.write = function(d){
+          console.log(d)
+          res.oldWrite(d)
+        }
+        if (proxyRes.statusCode>= 400){
           var err = {}
-          err.__statusCode = proxyReq.statusCode
-          err.err = proxyReq.statusMessage
+          err.__statusCode = proxyRes.statusCode
+          err.err = proxyRes.statusMessage
           err.type = "proxy error"
           next(err)
         }
