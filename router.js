@@ -323,7 +323,9 @@ app.use(function(req, res, next){
 app.use("/", function(req, res, next) {
     res.oldWrite = res.write
     res.write = function(d){
-      if (req.key_check && ! DISABLE_SEC){
+      // // DEBUG:  always run this
+      console.log(keyCheck(d, req))
+      if (req.key_method && ! DISABLE_SEC){
         d = keyCheck(d, req)
         console.log("here..")
       }
