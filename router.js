@@ -97,11 +97,14 @@ function keyCheck(data, req){
   try{
     if (req.key_method == "filter"){
       let list = JSON.parse(data.toString())
-      list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
+      // for debug, just hard code these
+      //list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
+      list.filter(x=>["a","b"].indexOf(x[req.key_check_field])>=0)
       return JSON.stringify(list)
     } else {
       let item = JSON.parse(data.toString())
-      if (req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])<0){
+      //if (req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])<0){
+      if (["a","b"].indexOf(x[req.key_check_field])<0){
         return("{}")
       } else {
         return(item)
@@ -110,7 +113,7 @@ function keyCheck(data, req){
   }
   catch(e){
     var err = {}
-    err.isError = yes
+    err.isError = true
     err.__statusCode = 500
     err.err = e
     err.type = "access control parsing error"
