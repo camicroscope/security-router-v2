@@ -92,6 +92,32 @@ app.use(function(req, res, next) {
     });
 });
 
+// key check filtering
+function keyCheck(data, req){
+  try{
+    if (req.key_method == "filter"){
+      let list = JSON.parse(data.toString())
+      list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
+      return JSON.stringify(list)
+    } else {
+      let item = JSON.parse(data.toString())
+      if (req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])<0){
+        return("{}")
+      } else {
+        return(item)
+      }
+    }
+  }
+  catch(e){
+    var err = {}
+    err.__statusCode = proxyRes.statusCode
+    err.err = e
+    err.type = "access control parsing error"
+    next(err)
+  }
+
+}
+
 // this method takes in the original url and config to resolve which url to ask for
 async function resolve(url, config, req) {
     let service = url.split("/")[1]
@@ -103,6 +129,7 @@ async function resolve(url, config, req) {
     let outUrl = ""
     let ispublic = false
     let attr = undefined
+    let key_method = undefined
     // check if exists first
     let serviceList = config.services
     let hasMethod = serviceList.hasOwnProperty(service) && serviceList[service].hasOwnProperty(type) && serviceList[service][type].hasOwnProperty(method);
@@ -111,12 +138,14 @@ async function resolve(url, config, req) {
         ispublic = serviceList[service]["_public"] || false
         outUrl += serviceList[service]["_base"] || ""
         if (isResolver) {
+          // TODO we will want to support
             attr = serviceList[service][type]["_resolver"].attr
             outUrl += await useResolver(method, serviceList[service][type]["_resolver"], req)
         } else {
             // does this have an attribute
             attr = serviceList[service][type][method].attr
             outUrl += serviceList[service][type][method]['path'] || serviceList[service][type][method] || ""
+            key_method = serviceList[service][type][method].key_method || undefined
         }
         // handle lingering method url params
         if (url.split("/")[3].split("?").length >= 2){
@@ -134,7 +163,8 @@ async function resolve(url, config, req) {
     return {
         url: outUrl,
         public: ispublic,
-        attr: attr
+        attr: attr,
+        key_method: key_method
     }
 }
 
@@ -226,6 +256,7 @@ app.use(function(req, res, next){
         req.new_url = x.url
         req.is_public = x.public
         req.attr = x.attr
+        req.key_method = x.key_method
         next()
     }).catch(e=>{
         req.resolve_failed = true
@@ -241,6 +272,9 @@ app.use(function(req, res, next){
   if (DISABLE_SEC){
     req.attr_ok = true
     next()
+  }
+  if (config.hasOwnProperty("auth") && config.auth.key_check){
+    req.key_check_field = config.auth.key_check
   }
   else if (config.hasOwnProperty("auth") && req.attr && config.auth.permissions_field){
     let ok_attrs = req.jwt_data[config.auth.permissions_field] || []
@@ -290,8 +324,9 @@ app.use("/", function(req, res, next) {
     console.log(Object.keys(res))
     res.oldWrite = res.write
     res.write = function(d){
-      console.log("THIS WAS CALLED --")
-      console.log(d.toString('UTF8'))
+      if (req.key_check && !DISABLE_SEC){
+        d = keyCheck(d, req)
+      }
       res.oldWrite(d)
     }
     proxy({
