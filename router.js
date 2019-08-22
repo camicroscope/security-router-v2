@@ -97,18 +97,23 @@ function keyCheck(data, req){
   try{
     if (req.key_method == "filter"){
       let list = JSON.parse(data.toString())
-      // for debug, just hard code these
-      //list = list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
+      list = list.filter(x=>{req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field])>=0})
       list = list.filter(x=>(!x[req.key_check_field]||["a","b"].indexOf(x[req.key_check_field])>=0))
       return JSON.stringify(list)
-    } else {
+    } else if (req.key_method == "single") {
       let item = JSON.parse(data.toString())
-      //if (req.jwt_data[req.key_check_field].indexOf(item[req.key_check_field])<0){
-      if (!item[req.key_check_field] || ["a","b"].indexOf(item[req.key_check_field])<0){
+      if (!item[req.key_check_field] || req.jwt_data[req.key_check_field].indexOf(item[req.key_check_field])<0){
         return("{}")
       } else {
         return(item)
       }
+    } else {
+      var err = {}
+      err.isError = true
+      err.__statusCode = 500
+      err.err = e
+      err.type = "access control unsupported method error"
+      return(err)
     }
   }
   catch(e){
@@ -326,13 +331,11 @@ app.use(function(req, res, next){
 app.use("/", function(req, res, next) {
     res.oldWrite = res.write
     res.write = function(d){
-      // // DEBUG:  always run this
-      console.log(keyCheck(d, req))
       if (req.key_method && ! DISABLE_SEC){
         d = keyCheck(d, req)
-        console.log("here..")
+        console.log("used access control checker")
+      } else {
       }
-      console.log("about to oldwrite")
       res.oldWrite(d)
     }
     proxy({
