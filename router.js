@@ -309,7 +309,8 @@ app.use("/", function(req, res, next) {
         console.log(Object.keys(proxyRes))
         res.oldWrite = res.write
         res.write = function(d){
-          console.log(d)
+          console.log("THIS WAS CALLED --")
+          console.log(d.toString('UTF8'))
           res.oldWrite(d)
         }
         if (proxyRes.statusCode>= 400){
