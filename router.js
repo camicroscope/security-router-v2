@@ -110,10 +110,11 @@ function keyCheck(data, req){
   }
   catch(e){
     var err = {}
+    err.isError = yes
     err.__statusCode = proxyRes.statusCode
     err.err = e
     err.type = "access control parsing error"
-    next(err)
+    return(err)
   }
 
 }
