@@ -111,7 +111,7 @@ function keyCheck(data, req){
   catch(e){
     var err = {}
     err.isError = yes
-    err.__statusCode = proxyRes.statusCode
+    err.__statusCode = 500
     err.err = e
     err.type = "access control parsing error"
     return(err)
@@ -323,9 +323,11 @@ app.use(function(req, res, next){
 app.use("/", function(req, res, next) {
     res.oldWrite = res.write
     res.write = function(d){
-      if (req.key_check && !DISABLE_SEC){
+      if (req.key_check && ! DISABLE_SEC){
         d = keyCheck(d, req)
+        console.log("here..")
       }
+      console.log("about to oldwrite")
       res.oldWrite(d)
     }
     proxy({
