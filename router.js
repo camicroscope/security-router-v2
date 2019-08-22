@@ -274,8 +274,8 @@ app.use(function(req, res, next){
     req.attr_ok = true
     next()
   }
-  if (config.hasOwnProperty("auth") && config.auth.key_check){
-    req.key_check_field = config.auth.key_check
+  if (config.hasOwnProperty("auth") && config.auth.key_field){
+    req.key_check_field = config.auth.key_field
   }
   else if (config.hasOwnProperty("auth") && req.attr && config.auth.permissions_field){
     let ok_attrs = req.jwt_data[config.auth.permissions_field] || []
