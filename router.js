@@ -343,6 +343,7 @@ app.use(function(req, res, next){
     }
     res.oldWrite(d)
   }
+  next()
 })
 
 // handle the proxy routes themselves
