@@ -96,15 +96,15 @@ app.use(function(req, res, next) {
 function keyCheck(data, req) {
   try {
     if (req.key_method == "filter") {
+      let user_keys = req.jwt_data[req.key_check_field] || []
       let list = JSON.parse(data.toString())
       list = list.filter(x => {
-        req.jwt_data[req.key_check_field].indexOf(x[req.key_check_field]) >= 0
+        !(x[req.key_check_field]) || user_keys.indexOf(x[req.key_check_field]) >= 0
       })
-      list = list.filter(x => (!x[req.key_check_field] || ["a", "b"].indexOf(x[req.key_check_field]) >= 0))
       return JSON.stringify(list)
     } else if (req.key_method == "single") {
       let item = JSON.parse(data.toString())
-      if (!item[req.key_check_field] || req.jwt_data[req.key_check_field].indexOf(item[req.key_check_field]) < 0) {
+      if (!item[req.key_check_field] || user_keys.indexOf(item[req.key_check_field]) < 0) {
         return ("{}")
       } else {
         return (item)
