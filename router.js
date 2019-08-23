@@ -97,7 +97,6 @@ function keyCheck(data, req) {
   try {
     if (req.key_method == "filter") {
       let user_keys = req.jwt_data[req.key_check_field] || []
-      console.log(user_keys)
       let list = JSON.parse(data.toString())
       list = list.filter(x => {
         return(!(x[req.key_check_field]) || user_keys.indexOf(x[req.key_check_field])) >= 0
@@ -194,7 +193,6 @@ async function useResolver(method, rule, req) {
     INvar = INvar.split(activeKeys[0])[0]
     // keep the rest of the things surrounding the invar
     beforeVar = method.slice(method.indexOf(activeKeys[0]))
-    console.log(beforeVar)
   }
   if (rule.after) {
     if ((typeof rule.after === 'string' || rule.after instanceof String)) {
@@ -314,7 +312,6 @@ app.use(function(req, res, next) {
     err.type = "resolve error"
     next(err)
   } else {
-    console.log("public check", req.is_public)
     if ((req.attr_ok && req.user_ok) || req.is_public) {
       next()
     } else {
@@ -358,7 +355,6 @@ app.use("/", function(req, res, next) {
     },
     onProxyReq: function(proxyReq, req, res) {
       if (req.method == "POST") {
-        console.log(req.rawBody.length)
         proxyReq.write(req.rawBody);
         proxyReq.end();
       }
