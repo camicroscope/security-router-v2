@@ -263,6 +263,9 @@ app.use(function(req, res, next) {
 
 // handle resolver
 app.use(function(req, res, next) {
+  if (config.hasOwnProperty("auth") && config.auth.key_field) {
+    req.key_check_field = config.auth.key_field
+  }
   resolve(req.originalUrl, config, req).then(x => {
     req.new_url = x.url
     req.is_public = x.public
@@ -284,9 +287,6 @@ app.use(function(req, res, next) {
   if (DISABLE_SEC) {
     req.attr_ok = true
     next()
-  }
-  if (config.hasOwnProperty("auth") && config.auth.key_field) {
-    req.key_check_field = config.auth.key_field
   }
   if (config.hasOwnProperty("auth") && req.attr && config.auth.permissions_field) {
     let ok_attrs = req.jwt_data[config.auth.permissions_field] || []
