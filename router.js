@@ -250,6 +250,7 @@ app.use(function(req, res, next) {
         req.user_ok = false
         next()
       } else {
+        console.log("253")
         req.jwt_data = decoded
         req.verified = true
         req.user_ok = true
@@ -327,19 +328,22 @@ app.use(function(req, res, next) {
   }
 })
 
-// handle the proxy routes themselves
-app.use("/", function(req, res, next) {
-  console.log("l332")
+// rewriter
+app.use(function(req, res, next){
+  console.log(333)
   res.oldWrite = res.write
   res.write = function(d) {
     console.log(req.key_method)
     if (req.key_method && !DISABLE_SEC) {
       console.log("using access control checker")
       d = keyCheck(d, req)
-
     }
     res.oldWrite(d)
   }
+})
+
+// handle the proxy routes themselves
+app.use("/", function(req, res, next) {
   proxy({
     secure: false,
     onError(err, req, res) {
