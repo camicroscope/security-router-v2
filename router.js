@@ -331,6 +331,7 @@ app.use(function(req, res, next) {
 app.use("/", function(req, res, next) {
   res.oldWrite = res.write
   res.write = function(d) {
+    console.log(req.key_method)
     if (req.key_method && !DISABLE_SEC) {
       console.log("using access control checker")
       d = keyCheck(d, req)
