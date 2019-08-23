@@ -268,6 +268,7 @@ app.use(function(req, res, next) {
     req.is_public = x.public
     req.attr = x.attr
     req.key_method = x.key_method
+    console.log("271")
     next()
   }).catch(e => {
     req.resolve_failed = true
@@ -297,6 +298,7 @@ app.use(function(req, res, next) {
     next()
   } else {
     req.attr_ok = true
+    console.log(301)
     next()
   }
 
@@ -316,6 +318,7 @@ app.use(function(req, res, next) {
     console.log("public check", req.is_public)
     if ((req.attr_ok && req.user_ok) || req.is_public) {
       next()
+      console.log(321)
     } else {
       res.header("Access-Control-Allow-Origin", "*");
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -330,7 +333,7 @@ app.use(function(req, res, next) {
 
 // rewriter
 app.use(function(req, res, next){
-  console.log(333)
+  console.log(336)
   res.oldWrite = res.write
   res.write = function(d) {
     console.log(req.key_method)
