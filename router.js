@@ -329,6 +329,7 @@ app.use(function(req, res, next) {
 
 // handle the proxy routes themselves
 app.use("/", function(req, res, next) {
+  console.log("l332")
   res.oldWrite = res.write
   res.write = function(d) {
     console.log(req.key_method)
