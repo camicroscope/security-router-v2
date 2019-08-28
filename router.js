@@ -17,6 +17,8 @@ var PORT = process.env.PORT || 4010
 let RESOLVER_CACHE = {}
 var HTTPS_MODE = false
 var https_options = {}
+var AUD = process.env.AUD || false
+var ISS = process.env.ISS || false
 // HTTPS IF AVALIABLE
 
 // get cookies
@@ -243,7 +245,14 @@ app.use(function(req, res, next) {
     req.user_ok = true
     next()
   } else {
-    jwt.verify(getToken(req), PUBKEY, function(err, decoded) {
+    let jwt_options = {}
+    if (AUD){
+      jwt_options = {"audience": AUD}
+    }
+    if (ISS){
+      jwt_options = {"issuer": ISS}
+    }
+    jwt.verify(getToken(req), PUBKEY, jwt_options, function(err, decoded) {
       if (err) {
         req.jwt_err = err
         req.user_ok = false
