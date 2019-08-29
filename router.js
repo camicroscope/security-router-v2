@@ -247,10 +247,10 @@ app.use(function(req, res, next) {
   } else {
     let jwt_options = {}
     if (AUD){
-      jwt_options = {"audience": AUD}
+      jwt_options.audience = AUD
     }
     if (ISS){
-      jwt_options = {"issuer": ISS}
+      jwt_options.issuer = ISS
     }
     jwt.verify(getToken(req), PUBKEY, jwt_options, function(err, decoded) {
       if (err) {
