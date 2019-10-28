@@ -140,7 +140,7 @@ async function resolve(url, config, req) {
     url: outUrl,
     public: ispublic,
     attr: attr,
-    key_method: key_method
+    check_param: check_param
   }
 }
 
