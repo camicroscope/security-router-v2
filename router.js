@@ -105,7 +105,7 @@ async function resolve(url, config, req) {
   let outUrl = ""
   let ispublic = false
   let attr = undefined
-  let key_method = undefined
+  let check_param = undefined
   // check if exists first
   let serviceList = config.services
   let hasMethod = serviceList.hasOwnProperty(service) && serviceList[service].hasOwnProperty(type) && serviceList[service][type].hasOwnProperty(method);
@@ -121,7 +121,7 @@ async function resolve(url, config, req) {
       // does this have an attribute
       attr = serviceList[service][type][method].attr
       outUrl += serviceList[service][type][method]['path'] || serviceList[service][type][method] || ""
-      key_method = serviceList[service][type][method].key_method || undefined
+      check_param = serviceList[service][type][method].check_param || undefined
     }
     // handle lingering method url params
     if (url.split("/")[3].split("?").length >= 2) {
@@ -241,7 +241,7 @@ app.use(function(req, res, next) {
     req.new_url = x.url
     req.is_public = x.public
     req.attr = x.attr
-    req.key_method = x.key_method
+    req.check_param = x.check_param
     next()
   }).catch(e => {
     req.resolve_failed = true
@@ -274,6 +274,32 @@ app.use(function(req, res, next) {
 
 })
 
+// "check_param" check
+app.use(function(req, res, next){
+  if ((!DISABLE_SEC) && config.hasOwnProperty("auth") && config.auth.key_field) {
+    req.key_check_field = config.auth.key_field
+    if(req.check_param){
+      let user_keys = req.jwt_data[req.key_check_field] || []
+      if(req.query && req.query[req.check_param]){
+        if (user_keys.indexOf(req.query[req.check_param]) >=0) {
+          req.param_ok = true
+        } else {
+          req.jwt_err = "User does not have appropriate param key for check param"
+          req.param_ok = false
+        }
+      } else {
+        req.param_ok = false
+        req.jwt_err = "Query does not have appropriate field for check param"
+      }
+    } else {
+      req.param_ok = true
+    }
+  } else {
+    req.param_ok = true
+  }
+  next()
+})
+
 // handle breaking errors thusfar
 app.use(function(req, res, next) {
   if (req.resolve_failed) {
@@ -285,7 +311,7 @@ app.use(function(req, res, next) {
     err.type = "resolve error"
     next(err)
   } else {
-    if ((req.attr_ok && req.user_ok) || req.is_public) {
+    if ((req.attr_ok && req.param_ok && req.user_ok) || req.is_public) {
       next()
     } else {
       res.header("Access-Control-Allow-Origin", "*");

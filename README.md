@@ -29,16 +29,9 @@ permissions_field - the field in the given jwt to check for permission attribute
 A specific route can be assigned an attribute regarding its access ("attr"). If an attr is present on a route, it's routed if and only if the user check for that attr returns okay.
 
 
-#### Keys
-For documents expected to return one or a list of JSON documents, you can prevent a user from seeing documents with a given field (a "key") not matching any of the "keys" in the user's token.
-The name of the "key" in the token and document should be defined as "key_field" under security in the routes config
-This should be defined per route in the config via the "key_method" field.
+#### Query Field Checks
 
-Supported options include:
- - "filter" -- filter documents which have a key the user does not out of results
- - "single" -- return "{}" if the single document has a key which the user does not have
-
-Currently, resolvers do not work with keys. This should be fixed soon. If you're reading this, please put in an issue if you desire this functionality, to signal that this should get focus/priority.
+check_param in a route's config will check if the content of that paramater in the query exists and is in a list in the user's key field
 
 ### enviornment variables
 
