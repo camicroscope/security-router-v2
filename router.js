@@ -94,42 +94,6 @@ app.use(function(req, res, next) {
   });
 });
 
-// key check filtering
-function keyCheck(data, req) {
-  try {
-    if (req.key_method == "filter") {
-      let user_keys = req.jwt_data[req.key_check_field] || []
-      let list = JSON.parse(data.toString())
-      list = list.filter(x => {
-        return(!(x[req.key_check_field]) || user_keys.indexOf(x[req.key_check_field])) >= 0
-      })
-      return JSON.stringify(list)
-    } else if (req.key_method == "single") {
-      let item = JSON.parse(data.toString())
-      if (!item[req.key_check_field] || user_keys.indexOf(item[req.key_check_field]) < 0) {
-        return ("{}")
-      } else {
-        return (item)
-      }
-    } else {
-      var err = {}
-      err.isError = true
-      err.__statusCode = 500
-      err.err = e
-      err.type = "access control unsupported method error"
-      return (err)
-    }
-  } catch (e) {
-    var err = {}
-    err.isError = true
-    err.__statusCode = 500
-    err.err = e
-    err.type = "access control parsing error"
-    return (err)
-  }
-
-}
-
 // this method takes in the original url and config to resolve which url to ask for
 async function resolve(url, config, req) {
   let service = url.split("/")[1]
@@ -333,21 +297,6 @@ app.use(function(req, res, next) {
       next(err)
     }
   }
-})
-
-// rewriter
-app.use(function(req, res, next){
-  if (!DISABLE_SEC){
-    res.oldWrite = res.write
-    res.write = function(d) {
-      if (req.key_method) {
-        console.log("using access control checker")
-        d = keyCheck(d, req)
-      }
-      res.oldWrite(d)
-    }
-  }
-  next()
 })
 
 // handle the proxy routes themselves
