@@ -6,7 +6,7 @@ This is intended for use with a docker deployment, or a deployment behind a reve
 
 ### SSL
 
-To enable ssl, mount the private key and certificate files to ssl/privatekey.pem and ssl/certificate.pem respectively. HTTPS mode will only be enabled if both of these files are present.
+To enable SSL, mount the private key and certificate files to ssl/privatekey.pem and ssl/certificate.pem respectively. HTTPS mode will only be enabled if both of these files are present.
 
 ### routes.json
 
@@ -15,7 +15,7 @@ Under services, should be each top level service. Each service has a \_base for 
 
 Of course, the nomenclature chosen may not match configuration, but the important thing to note is that requests, outside of those directed at the root service, should be in the form https://<url base>/service/resource/method.
 
-### User Managment
+### User Management
 
 This tool does not directly keep track of users, but it provides a framework to integrate with a service which does.
 In routes.json, add an "auth" section with the following configuration options.
@@ -33,9 +33,9 @@ A specific route can be assigned an attribute regarding its access ("attr"). If 
 
 check_param in a route's config will check if the content of that paramater in the query exists and is in a list in the user's key field
 
-### enviornment variables
+### environment variables
 
-As of now, two settings may be changed with enviornment variables:
+As of now, two settings may be changed with environment variables:
 
 SECRET - the secret for JWT checks
 DISABLE_SEC - set to true to skip all auth checks regardless of if public is set. Designed for cert/testing.
