@@ -350,6 +350,7 @@ app.use("/", function(req, res, next) {
         var err = {}
         err.__statusCode = proxyRes.statusCode
         err.err = proxyRes.statusMessage
+        err.body = proxyRes.text
         err.type = "proxy error"
         next(err)
       }
