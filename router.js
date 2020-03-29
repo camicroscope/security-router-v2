@@ -348,6 +348,9 @@ app.use("/", function(req, res, next) {
     onProxyRes: function(proxyRes, req, res) {
       if (proxyRes.statusCode >= 400) {
         var err = {}
+        console.log(proxyRes)
+        console.log(proxyRes.text)
+        console.log(proxyRes.body)
         err.__statusCode = proxyRes.statusCode
         err.err = proxyRes.statusMessage
         err.body = proxyRes.text
